@@ -1,0 +1,10 @@
+Aux vues du nombre de connexions prévues, je préconiserais une architecture Thread-per-request au niveau du serveur pour ce qui est de la consultation des résultats. 
+
+Pour ce qui est de la partie paris, nous sommes contraints d'utiliser une architecture Thread-per-Object
+
+Il est possible que les clients aient de nombreuses requêtes à effectuer sur le serveur. Le protocole UDP sera donc utilisé, puisque qu'il est facile de vérifier que les informations ont bien étés envoyées (utilisation de Timeout).
+
+Les interractions avec le serveur se feront sur la même adresse IP. Par contre, les services disponibles (paris & consultation des résultats) se feront via deux ports différents.
+
+
+ATTENTION : La version de Java utilisée sera Jdk 1.8
