@@ -22,11 +22,11 @@ public static Request unmarshall(byte[] request) {
             return SerializationUtils.deserialize(request);
     }
     @SuppressWarnings("empty-statement")
-public static byte[] marshall(Match match) {
-//    public static byte[] marshall(Request requete) {
+//public static byte[] marshall(Match match) {
+    public static byte[] marshall(Request requete) {
         // TODO Auto-generated method stub
-//    return SerializationUtils.serialize((Serializable) requete);
-        return SerializationUtils.serialize((Serializable) match);
+    return SerializationUtils.serialize((Serializable) requete);
+//        return SerializationUtils.serialize((Serializable) match);
 }
 //    public static byte[] marshallMatch(Request requete) {
 //            // TODO Auto-generated method stub
