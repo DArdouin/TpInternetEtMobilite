@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package clienthockey;
-
+import Match.Match;
+import Match.Equipe;
 /**
  *
  * @author Damien
@@ -15,7 +16,10 @@ public class ClientHockey {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Window MyWindow = new Window();
+        DatagramClient MyDatagramClient = new DatagramClient();
+        
+        
     }
     
 }
