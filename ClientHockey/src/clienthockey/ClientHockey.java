@@ -18,8 +18,7 @@ public class ClientHockey {
     public static void main(String[] args) {
         Window MyWindow = new Window();
         DatagramClient MyDatagramClient = new DatagramClient();
-        
-        
+            
     }
     
 }

@@ -16,22 +16,17 @@ import protocole.Request;
  *
  * @author Quentin
  */
-public class Request extends Message{
+public class Request extends Message implements Serializable{
 public static Request unmarshall(byte[] request) {
             // TODO Auto-generated method stub
             return SerializationUtils.deserialize(request);
     }
     @SuppressWarnings("empty-statement")
-public static byte[] marshall(Match match) {
-//    public static byte[] marshall(Request requete) {
-        // TODO Auto-generated method stub
-//    return SerializationUtils.serialize((Serializable) requete);
-        return SerializationUtils.serialize((Serializable) match);
-}
-//    public static byte[] marshallMatch(Request requete) {
-//            // TODO Auto-generated method stub
-//            return null;
-//    }
+    public static byte[] marshall(Request request) {
+
+            return SerializationUtils.serialize((Serializable) request);
+    }
+
     public int getAddress() {
             // TODO Auto-generated method stub
             return 0;
