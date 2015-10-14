@@ -41,13 +41,14 @@ public class DatagramClient
 
          // Construct the datagram packet
 //         byte [] data = "Hello Server".getBytes() ;
-         Match MyMatch = new Match(new Equipe("red socks"), new Equipe("Canadian MontReal"));
+         Match MyMatch = new Match(new Equipe("red socks"), new Equipe("Canadian Sherbrooke"));
          Request MyRequest = new Request();
          MyRequest.setMatch(MyMatch); 
          
          byte [] data = Request.marshall(MyRequest);
+         
          DatagramPacket packet = new DatagramPacket( data, data.length, InetAddress.getByName("192.168.0.60"), 11111 ) ;
-
+         
          // Send it
          socket.send( packet ) ;
 
