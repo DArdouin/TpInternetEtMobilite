@@ -15,6 +15,8 @@ public class detailMatch extends AppCompatActivity {
     private TextView textVisiteur;
     private TextView textLocalPoint;
     private TextView textVisiteurPoint;
+    private TextView textNumPeriode;
+    private TextView textTempsRestant;
 
 
     @Override
@@ -26,6 +28,8 @@ public class detailMatch extends AppCompatActivity {
         textVisiteur = (TextView) findViewById(R.id.visiteur);
         textLocalPoint = (TextView) findViewById(R.id.localPoint);
         textVisiteurPoint = (TextView) findViewById(R.id.visiteurPoint);
+        textNumPeriode = (TextView) findViewById(R.id.numperiode);
+        textTempsRestant = (TextView) findViewById(R.id.tempsrestant);
 
         Intent i = getIntent();
 
@@ -39,6 +43,8 @@ public class detailMatch extends AppCompatActivity {
         textVisiteur.setText(visiteur);
         textVisiteurPoint.setText(String.valueOf(match.getEquipeVisiteur().getScore()));
         textLocalPoint.setText(String.valueOf(match.getEquipeLocal().getScore()));
+        textNumPeriode.setText("2");
+        textTempsRestant.setText("1:30");
 
     }
 
