@@ -29,14 +29,15 @@ public class ServeurHockey {
                 System.out.println("Server started");
                 //myMatchInfoSocket = new DatagramSocket(11112) ; // port pour les infos des matchs
                 
-                byte[] betBuffer = new byte[1000];
+                byte[] buffer = new byte[1000];
 
                 while (true) {
-                        DatagramPacket dgp = new DatagramPacket(betBuffer,betBuffer.length);
+                        DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
+                        
                         System.out.println("Waiting for request...");
                         myBetSocket.receive(dgp); // rŽception bloquante
                         System.out.println("Request receive !!");
-
+                        
                         Request Requete = Request.unmarshall(dgp.getData());
                         new Thread(new RequestHandler(Requete, serverIP, serverPort)).start();
                 }

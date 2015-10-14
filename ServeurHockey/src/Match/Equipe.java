@@ -5,11 +5,13 @@
  */
 package Match;
 
+import java.io.Serializable;
+
 /**
  * Cette classe permet de stocker toutes les informations relatives à un équipe de Hockey
  * @author Damien
  */
-public class Equipe {
+public class Equipe implements Serializable{
     /**
      * Nom de l'équipe
      */
@@ -20,7 +22,7 @@ public class Equipe {
      * @param nom Le nom de l'équipe que l'on vient de créer
      */
     public Equipe(String nom){
-        
+        this.nom = nom ;
     }
 
     /**

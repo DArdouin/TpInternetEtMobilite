@@ -6,18 +6,18 @@
 package protocole;
 
 import Match.Match;
+import java.io.Serializable;
 
 /**
  *
  * @author Quentin
  */
-public class Message {
+public class Message implements Serializable{
     public enum methodes {
             updateMatchInfo, parier
     };
     
-    private boolean betRequest ;
-    private boolean matchInfoRequest ;
+    private boolean request ;
     
     private int numeroRequete;
     private methodes methode; 
@@ -26,11 +26,11 @@ public class Message {
     private Match match ;
     
     public boolean isRequest(){
-        return this.betRequest;
+        return this.request;
     }
     
     public void setRequest(boolean request){
-        this.betRequest = request ;
+        this.request = request ;
     }
     
     public int getNumeroRequete() {

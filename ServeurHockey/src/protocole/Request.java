@@ -14,7 +14,7 @@ import org.apache.commons.lang3.SerializationUtils;
  *
  * @author Quentin
  */
-public class Request extends Message{
+public class Request extends Message {
     public static Request unmarshall(byte[] request) {
             // TODO Auto-generated method stub
             return SerializationUtils.deserialize(request);

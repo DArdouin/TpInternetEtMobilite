@@ -5,7 +5,6 @@
  */
 package protocole;
 
-import sun.misc.RequestProcessor;
 
 /**
  *
@@ -17,8 +16,6 @@ public class RequestHandler implements Runnable{
     private int serverPort ;
     private Request request ;
     
-    private RequestProcessor myProcessor ;
-    
     public RequestHandler(Request request, String IP, int port){
         this.request = request ;
         this.serverIP = IP ;
@@ -29,7 +26,7 @@ public class RequestHandler implements Runnable{
     public void run() {
         
         System.out.println("Thread created ! ");
-        System.out.println("équipe domicile : " + this.request.getMatch().getEquipeDomicile()+ " équipe exterieur : " + this.request.getMatch().getEquipeExterieur());
+        System.out.println("équipe domicile : " + this.request.getMatch().getEquipeDomicile().getNom()+ " équipe exterieur : " + this.request.getMatch().getEquipeExterieur().getNom());
     }
     
 }
