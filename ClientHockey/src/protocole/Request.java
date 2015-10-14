@@ -26,7 +26,7 @@ public static Request unmarshall(byte[] request) {
 
             return SerializationUtils.serialize((Serializable) request);
     }
-
+    
     public int getAddress() {
             // TODO Auto-generated method stub
             return 0;
