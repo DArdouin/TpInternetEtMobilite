@@ -25,7 +25,7 @@ public class RequestHandler implements Runnable{
     @Override
     public void run() {
         
-        System.out.println("Thread created ! ");
+        System.out.println("Request Handler crée dans notre pool de threads");
         System.out.println("équipe domicile : " + this.request.getMatch().getEquipeDomicile().getNom()+ " équipe exterieur : " + this.request.getMatch().getEquipeExterieur().getNom());
     }
     

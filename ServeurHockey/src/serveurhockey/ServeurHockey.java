@@ -20,55 +20,21 @@ import Match.* ;
  */
 public class ServeurHockey {
     
-    private DatagramSocket myBetSocket;
-    private DatagramSocket myMatchInfoSocket;
+
+    private ListeDesMatchs matchList;
+    private FilExecutionParis filDeParis;
+    private FilExecutionMatch filDeMatchs;
     
-    private ListeDesMatchs matchList  ;
-    
-    public ServeurHockey(){
-        matchList = new ListeDesMatchs() ;
-    }
-
-    public void demarrer(String serverIP, int serverPort) {
-        myBetSocket = null;
-        try {
-                myBetSocket = new DatagramSocket(11111); // port pour les paris
-                System.out.println("Server started");
-                //myMatchInfoSocket = new DatagramSocket(11112) ; // port pour les infos des matchs
-                
-                byte[] buffer = new byte[1000];
-
-                while (true) {
-                        DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
-                        
-                        System.out.println("Waiting for request...");
-                        myBetSocket.receive(dgp); // rŽception bloquante
-                        System.out.println("Request receive !!");
-                        
-                        Request Requete = Request.unmarshall(dgp.getData());
-                        new Thread(new RequestHandler(Requete, serverIP, serverPort)).start();
-                }
-        } catch (SocketException e) {
-                System.out.println("Socket: " + e.getMessage());
-        } catch (IOException e) {
-                System.out.println("IO: " + e.getMessage());
-        }
-
-        finally {
-                if (myBetSocket != null)
-                        myBetSocket.close();
-                if(myMatchInfoSocket != null)
-                        myMatchInfoSocket.close();
-        }
-
-    }
-
-    public void arreter() {
-        if (myBetSocket != null)
-                myBetSocket.close();
-        if(myMatchInfoSocket != null)
-                myMatchInfoSocket.close();
+    public ServeurHockey(String serverIp, int matchPort, int parisPort){
+        matchList = new ListeDesMatchs();
         
+        //On initialise nos deux fils d'éxecution
+        filDeMatchs  = new FilExecutionMatch(serverIp, matchPort);
+        filDeParis = new FilExecutionParis(serverIp, parisPort);
+        
+        //Puis on les lance
+        new Thread(filDeMatchs).start();
+        new Thread(filDeParis).start();
     }
 
     /**
@@ -77,13 +43,12 @@ public class ServeurHockey {
     public static void main(String[] args) {
         
         String serverIP = "192.168.0.60" ;
-        int serverPort = 11111 ;
+        int matchPort = 11111 ;
+        int parisPort = 22222;
         // TODO code application logic here
         /*String serverIP = args[0];
-        int serverPort = Integer.valueOf(args[1]);*/
-        ServeurHockey monServeur = new ServeurHockey();
-        monServeur.demarrer(serverIP,serverPort);
-
+        int matchPort = Integer.valueOf(args[1]);*/
+        ServeurHockey monServeur = new ServeurHockey(serverIP,matchPort,parisPort);       
     }
     
 }
