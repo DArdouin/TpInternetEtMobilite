@@ -31,7 +31,6 @@ public class RequestHandler implements Runnable{
     @Override
     public void run() {
         
-<<<<<<< HEAD
         switch(request.getMethode()){
             case demandeListMatch : 
                 Request request = new Request(); 
@@ -42,10 +41,6 @@ public class RequestHandler implements Runnable{
             case updateMatchInfo : 
                 break ;
         }
-=======
-        System.out.println("Request Handler crée dans notre pool de threads");
-        System.out.println("équipe domicile : " + this.request.getMatch().getEquipeDomicile().getNom()+ " équipe exterieur : " + this.request.getMatch().getEquipeExterieur().getNom());
->>>>>>> Damien
     }
     
 }

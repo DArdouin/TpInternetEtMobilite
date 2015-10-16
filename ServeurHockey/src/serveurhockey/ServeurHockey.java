@@ -20,56 +20,13 @@ import java.text.ParseException;
  * @author Damien
  */
 public class ServeurHockey {
-    
-<<<<<<< HEAD
-    private DatagramSocket myBetSocket;
-    private DatagramSocket myMatchInfoSocket;
-    
-    private ListeDesMatchs matchList  ;
-    
-    public ServeurHockey() throws ParseException{
-        matchList = new ListeDesMatchs() ;
-    }
 
-    public void demarrer(String serverIP, int serverPort) {
-        myBetSocket = null;
-        try {
-                myBetSocket = new DatagramSocket(11111); // port pour les paris
-                System.out.println("Server started");
-                //myMatchInfoSocket = new DatagramSocket(11112) ; // port pour les infos des matchs
-                
-                byte[] buffer = new byte[1000];
-
-                while (true) {
-                        DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
-                        
-                        System.out.println("Waiting for request...");
-                        myBetSocket.receive(dgp); // rŽception bloquante
-                        System.out.println("Request receive !!");
-                        
-                        Request Requete = Request.unmarshall(dgp.getData());
-                        new Thread(new RequestHandler(Requete, serverIP, serverPort)).start();
-                }
-        } catch (SocketException e) {
-                System.out.println("Socket: " + e.getMessage());
-        } catch (IOException e) {
-                System.out.println("IO: " + e.getMessage());
-        }
-
-        finally {
-                if (myBetSocket != null)
-                        myBetSocket.close();
-                if(myMatchInfoSocket != null)
-                        myMatchInfoSocket.close();
-        }
-=======
->>>>>>> Damien
 
     private ListeDesMatchs matchList;
     private FilExecutionParis filDeParis;
     private FilExecutionMatch filDeMatchs;
     
-    public ServeurHockey(String serverIp, int matchPort, int parisPort){
+    public ServeurHockey(String serverIp, int matchPort, int parisPort) throws ParseException{
         matchList = new ListeDesMatchs();
         
         //On initialise nos deux fils d'éxecution
