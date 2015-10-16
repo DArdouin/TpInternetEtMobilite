@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package clienthockey;
+import com.sun.java.swing.plaf.windows.resources.windows;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
@@ -47,4 +48,6 @@ public class Window {
         text_area.getText();    
         
     }
+    
+    
 }

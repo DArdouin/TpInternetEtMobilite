@@ -5,11 +5,13 @@
  */
 package Match;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Damien
  */
-public class Match {
+public class Match implements Serializable{
     /**
      * 
      */

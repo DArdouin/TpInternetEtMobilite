@@ -23,6 +23,11 @@ public class Equipe implements Serializable{
      */
     public Equipe(String nom){
         this.nom = nom;
+<<<<<<< HEAD
+=======
+        
+        
+>>>>>>> origin/madelock
     }
 
     /**
