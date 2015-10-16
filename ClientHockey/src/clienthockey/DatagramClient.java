@@ -74,48 +74,4 @@ public class DatagramClient
             socket.close() ;
       }
    }
-    
-    public void DatagramClientSend() {
-
-      // Check the arguments
-
-      DatagramSocket socket = null ;
-
-      try
-      {
-         // Convert the arguments first, to ensure that they are valid
-
-         // Construct the socket
-         socket = new DatagramSocket() ;
-
-         // Construct the datagram packet
-         byte [] data = "Hello Server".getBytes() ;
-         DatagramPacket packet = new DatagramPacket( data, data.length, InetAddress.getByName("192.168.0.60"), 11111 ) ;
-
-         // Send it
-         socket.send( packet ) ;
-
-         // Set a receive timeout, 2000 milliseconds
-         socket.setSoTimeout( 2000 ) ;
-
-         // Prepare the packet for receive
-         packet.setData( new byte[PACKETSIZE] ) ;
-
-         // Wait for a response from the server
-         socket.receive( packet ) ;
-
-         // Print the response
-         System.out.println( new String(packet.getData()) ) ;
-
-      }
-      catch( Exception e )
-      {
-         System.out.println( e ) ;
-      }
-      finally
-      {
-         if( socket != null )
-            socket.close() ;
-      }
-   }    
 }

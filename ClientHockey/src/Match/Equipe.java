@@ -22,7 +22,7 @@ public class Equipe implements Serializable{
      * @param nom Le nom de l'équipe que l'on vient de créer
      */
     public Equipe(String nom){
-        
+        this.nom = nom;
     }
 
     /**
