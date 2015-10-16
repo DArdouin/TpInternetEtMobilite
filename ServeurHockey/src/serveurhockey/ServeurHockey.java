@@ -21,6 +21,7 @@ import java.text.ParseException;
  */
 public class ServeurHockey {
     
+<<<<<<< HEAD
     private DatagramSocket myBetSocket;
     private DatagramSocket myMatchInfoSocket;
     
@@ -61,15 +62,23 @@ public class ServeurHockey {
                 if(myMatchInfoSocket != null)
                         myMatchInfoSocket.close();
         }
+=======
+>>>>>>> Damien
 
-    }
-
-    public void arreter() {
-        if (myBetSocket != null)
-                myBetSocket.close();
-        if(myMatchInfoSocket != null)
-                myMatchInfoSocket.close();
+    private ListeDesMatchs matchList;
+    private FilExecutionParis filDeParis;
+    private FilExecutionMatch filDeMatchs;
+    
+    public ServeurHockey(String serverIp, int matchPort, int parisPort){
+        matchList = new ListeDesMatchs();
         
+        //On initialise nos deux fils d'éxecution
+        filDeMatchs  = new FilExecutionMatch(serverIp, matchPort);
+        filDeParis = new FilExecutionParis(serverIp, parisPort);
+        
+        //Puis on les lance
+        new Thread(filDeMatchs).start();
+        new Thread(filDeParis).start();
     }
 
     /**
@@ -78,13 +87,12 @@ public class ServeurHockey {
     public static void main(String[] args) throws ParseException {
         
         String serverIP = "192.168.0.60" ;
-        int serverPort = 11111 ;
+        int matchPort = 11111 ;
+        int parisPort = 22222;
         // TODO code application logic here
         /*String serverIP = args[0];
-        int serverPort = Integer.valueOf(args[1]);*/
-        ServeurHockey monServeur = new ServeurHockey();
-        monServeur.demarrer(serverIP,serverPort);
-
+        int matchPort = Integer.valueOf(args[1]);*/
+        ServeurHockey monServeur = new ServeurHockey(serverIP,matchPort,parisPort);       
     }
     
 }
