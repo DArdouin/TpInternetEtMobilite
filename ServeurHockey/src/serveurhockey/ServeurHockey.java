@@ -12,6 +12,7 @@ import java.net.SocketException;
 
 import protocole.Request ;
 import protocole.RequestHandler;
+import Match.* ;
 
 /**
  *
@@ -19,8 +20,14 @@ import protocole.RequestHandler;
  */
 public class ServeurHockey {
     
-    DatagramSocket myBetSocket;
-    DatagramSocket myMatchInfoSocket;
+    private DatagramSocket myBetSocket;
+    private DatagramSocket myMatchInfoSocket;
+    
+    private ListeDesMatchs matchList  ;
+    
+    public ServeurHockey(){
+        matchList = new ListeDesMatchs() ;
+    }
 
     public void demarrer(String serverIP, int serverPort) {
         myBetSocket = null;
@@ -76,6 +83,7 @@ public class ServeurHockey {
         int serverPort = Integer.valueOf(args[1]);*/
         ServeurHockey monServeur = new ServeurHockey();
         monServeur.demarrer(serverIP,serverPort);
+
     }
     
 }

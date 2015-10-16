@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 public class Message implements Serializable{
     public enum methodes {
-            updateMatchInfo, parier
+            updateMatchInfo, parier, demandeListMatch
     };
     
     private boolean request ;

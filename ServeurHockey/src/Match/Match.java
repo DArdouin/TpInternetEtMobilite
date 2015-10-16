@@ -6,12 +6,13 @@
 package Match;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
  * @author Damien
  */
-public class Match implements Serializable{
+public class Match implements Serializable, Runnable {
     /**
      * 
      */
@@ -25,13 +26,15 @@ public class Match implements Serializable{
     private Integer nbPenaliteExterieur ;
     private Integer nbButsDomicile ;
     private Integer nbButsExterieur ;
+    private Date dateDebut  ;
 
     /**
      * Permet de créer un Match, en passant les équipes en paramètres
      * @param e1 La première équipe
      * @param e2 La seconde équipe
+     * @param date
      */
-    public Match(Equipe e1, Equipe e2){
+    public Match(Equipe e1, Equipe e2, Date date){
         equipeDomicile = e1;
         equipeExterieur = e2;
         temps = 0 ;
@@ -39,6 +42,7 @@ public class Match implements Serializable{
         nbButsExterieur = 0 ;
         nbPenaliteDomicile = 0 ;
         nbPenaliteExterieur = 0 ;
+        dateDebut = date ;
     }
 
     public Equipe getEquipeDomicile() {
@@ -97,9 +101,22 @@ public class Match implements Serializable{
         this.nbButsExterieur = nbButsExterieur;
     }
 
+    public Date getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+    
     @Override
     public String toString() {
-        return "Match :" + "Equipe domicile : " + equipeDomicile.getNom() + "- Equipe exterieur : " + equipeExterieur.getNom() ;
+        return " " + equipeDomicile.getNom() + " Versus " + equipeExterieur.getNom() ;
+    }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
