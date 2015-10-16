@@ -53,15 +53,9 @@ public class FilExecutionMatch implements Runnable{
                 while (true) {
                         DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
                         System.out.println("Waiting for request...");
-                    try {
-                        //myMatchInfoSocket.receive(dgp); // réception bloquante
-                        Thread.sleep(1500);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(FilExecutionMatch.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                        myMatchInfoSocket.receive(dgp); // réception bloquante
                         System.out.println("Request receive !!");
-                        Request Requete = new Request();
-                        //Request Requete = Request.unmarshall(dgp.getData());
+                        Request Requete = Request.unmarshall(dgp.getData());
                         //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on lance un thread qui va aller chercher l'information
                         execute.submit(new RequestHandler(Requete, serverIP, serverPort));
                 }
