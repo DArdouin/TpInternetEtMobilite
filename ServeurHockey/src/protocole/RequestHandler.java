@@ -5,6 +5,8 @@
  */
 package protocole;
 
+import protocole.Methodes ;
+
 
 /**
  *
@@ -22,11 +24,23 @@ public class RequestHandler implements Runnable{
         this.serverPort = port ;
     }
     
+    public void transmettre(Message messageToSend){
+        
+    }
+    
     @Override
     public void run() {
         
-        System.out.println("Thread created ! ");
-        System.out.println("équipe domicile : " + this.request.getMatch().getEquipeDomicile().getNom()+ " équipe exterieur : " + this.request.getMatch().getEquipeExterieur().getNom());
+        switch(request.getMethode()){
+            case demandeListMatch : 
+                Request request = new Request(); 
+                request.setMatchList(null);
+                break ;
+            case parier : 
+                break ;
+            case updateMatchInfo : 
+                break ;
+        }
     }
     
 }

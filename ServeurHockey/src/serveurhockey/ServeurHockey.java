@@ -13,6 +13,7 @@ import java.net.SocketException;
 import protocole.Request ;
 import protocole.RequestHandler;
 import Match.* ;
+import java.text.ParseException;
 
 /**
  *
@@ -25,7 +26,7 @@ public class ServeurHockey {
     
     private ListeDesMatchs matchList  ;
     
-    public ServeurHockey(){
+    public ServeurHockey() throws ParseException{
         matchList = new ListeDesMatchs() ;
     }
 
@@ -74,7 +75,7 @@ public class ServeurHockey {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         
         String serverIP = "192.168.0.60" ;
         int serverPort = 11111 ;

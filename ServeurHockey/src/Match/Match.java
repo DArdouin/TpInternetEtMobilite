@@ -6,13 +6,18 @@
 package Match;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
  * @author Damien
  */
-public class Match implements Serializable, Runnable {
+public class Match implements Serializable{
     /**
      * 
      */
@@ -21,12 +26,11 @@ public class Match implements Serializable, Runnable {
      * 
      */
     private Equipe equipeExterieur;
-    private Integer temps ; 
     private Integer nbPenaliteDomicile ;
     private Integer nbPenaliteExterieur ;
     private Integer nbButsDomicile ;
     private Integer nbButsExterieur ;
-    private Date dateDebut  ;
+    private String dateDebut  ;
 
     /**
      * Permet de créer un Match, en passant les équipes en paramètres
@@ -34,15 +38,14 @@ public class Match implements Serializable, Runnable {
      * @param e2 La seconde équipe
      * @param date
      */
-    public Match(Equipe e1, Equipe e2, Date date){
+    public Match(Equipe e1, Equipe e2, String date){
         equipeDomicile = e1;
         equipeExterieur = e2;
-        temps = 0 ;
         nbButsDomicile = 0 ;
         nbButsExterieur = 0 ;
         nbPenaliteDomicile = 0 ;
         nbPenaliteExterieur = 0 ;
-        dateDebut = date ;
+        dateDebut = date ;          
     }
 
     public Equipe getEquipeDomicile() {
@@ -53,8 +56,26 @@ public class Match implements Serializable, Runnable {
         return equipeExterieur;
     }
 
-    public Integer getTemps() {
-        return temps;
+    public long getTemps() throws ParseException {
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date actualDate = new Date();
+        Date scheduledDate = format.parse(dateDebut);
+        
+        long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
+        
+        System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
+        System.out.println("Diff : " + diff);
+        System.out.println("Secondes : " + diff / 1000);
+        
+        if(diff < 0 ){
+            return -1 ;
+        }
+        else if(diff >= (60*60)){
+            return 0 ;
+        }
+        else {
+            return diff ;
+        }
     }
 
     public Integer getNbPenaliteDomicile() {
@@ -81,10 +102,6 @@ public class Match implements Serializable, Runnable {
         this.equipeExterieur = equipeExterieur;
     }
 
-    public void setTemps(Integer temps) {
-        this.temps = temps;
-    }
-
     public void setNbPenaliteDomicile(Integer nbPenaliteDomicile) {
         this.nbPenaliteDomicile = nbPenaliteDomicile;
     }
@@ -101,11 +118,11 @@ public class Match implements Serializable, Runnable {
         this.nbButsExterieur = nbButsExterieur;
     }
 
-    public Date getDateDebut() {
+    public String getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(Date dateDebut) {
+    public void setDateDebut(String dateDebut) {
         this.dateDebut = dateDebut;
     }
     
@@ -113,11 +130,5 @@ public class Match implements Serializable, Runnable {
     public String toString() {
         return " " + equipeDomicile.getNom() + " Versus " + equipeExterieur.getNom() ;
     }
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     
 }
