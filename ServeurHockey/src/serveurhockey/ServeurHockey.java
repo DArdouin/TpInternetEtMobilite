@@ -30,7 +30,7 @@ public class ServeurHockey {
         matchList = new ListeDesMatchs();
         
         //On initialise nos deux fils d'éxecution
-        filDeMatchs  = new FilExecutionMatch(serverIp, matchPort);
+        filDeMatchs  = new FilExecutionMatch(serverIp, matchPort,matchList);
         filDeParis = new FilExecutionParis(serverIp, parisPort);
         
         //Puis on les lance
