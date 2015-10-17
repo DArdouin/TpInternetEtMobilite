@@ -5,7 +5,7 @@
  */
 package protocole;
 
-import Match.Match;
+import Match.*;
 import Paris.Paris;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,16 +17,14 @@ import java.util.Queue;
  * @author Quentin
  */
 public class Message implements Serializable{
-    public enum methodes {
-            updateMatchInfo, parier, demandeListMatch, confirmerParis, indiquerParisGagnant
-    };
     
     private boolean request ;
     private int numeroRequete;
-    private methodes methode;
+    private Methodes methode;
     private Paris paris;
     private String message;
     private Match match;
+    private ListeDesMatchs matchList;
 
     public Message() {
     }
@@ -62,7 +60,7 @@ public class Message implements Serializable{
     public void setMatch(Match leMatch) {
         this.match = leMatch;
     }
-
+    
     public void setParis(Paris paris) {
         this.paris = paris;
     }
@@ -70,4 +68,19 @@ public class Message implements Serializable{
     public Paris getParis() {
         return paris;
     }    
+    public Methodes getMethode() {
+        return methode;
+    }
+
+    public void setMethode(Methodes methode) {
+        this.methode = methode;
+    }
+
+    public ListeDesMatchs getMatchList() {
+        return matchList;
+    }
+
+    public void setMatchList(ListeDesMatchs matchList) {
+        this.matchList = matchList;
+    }
 }

@@ -33,7 +33,7 @@ public class FilExecutionMatch implements Runnable{
     /**
      * Permet de récupérer les requêtes UDP 
      */
-    private DatagramSocket myMatchInfoSocket;  
+    private DatagramSocket myMatchInfoSocket;
     private ListeDesMatchs matchList;
 
     public FilExecutionMatch(String serverIP, int serverPort, ListeDesMatchs matchList) {
@@ -49,7 +49,7 @@ public class FilExecutionMatch implements Runnable{
                 
         try {
                 myMatchInfoSocket = new DatagramSocket(serverPort); // port pour les informations
-                System.out.println("Le fil d'actualisation des matchs est lancé, sur à l'IP " + serverIP + " sur le port " + serverPort);
+                System.out.println("Le fil d'actualisation des matchs est lancé, sur l'IP " + serverIP + " sur le port " + serverPort);
 
                 byte[] buffer = new byte[1000];
 
@@ -57,11 +57,10 @@ public class FilExecutionMatch implements Runnable{
                         DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
                         System.out.println("Waiting for request...");
                         myMatchInfoSocket.receive(dgp); // réception bloquante
+
                         System.out.println("Request receive !!");
-                        Request requete = Request.unmarshall(dgp.getData());
-                        
+                        Request Requete = Request.unmarshall(dgp.getData());
                         //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on lance un thread qui va aller chercher l'information
-                        execute.submit(new RequestHandler(requete, serverIP, serverPort));
                 }
         } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());

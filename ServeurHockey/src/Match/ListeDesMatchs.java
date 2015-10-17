@@ -5,6 +5,7 @@
  */
 package Match;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,16 +21,18 @@ public class ListeDesMatchs {
     
     private List<Match> matchs ; 
     
-    public ListeDesMatchs(){
+    public ListeDesMatchs() throws ParseException{
         matchs = new ArrayList<>(); 
-        Match match1 = new Match(new Equipe("Sherbrooke"),new Equipe("Montréal"), new Date(2015,10,18,20,00,00));
-        Match match2 = new Match(new Equipe("Sherbrooke"),new Equipe("Ottawa"), new Date(2015,10,18,20,00,00));
-        Match match3 = new Match(new Equipe("Sherbrooke"),new Equipe("Québec"), new Date(2015,10,18,20,00,00));
-        Match match4 = new Match(new Equipe("Sherbrooke"),new Equipe("Vancouver"), new Date(2015,10,18,20,00,00));
+        Match match1 = new Match(new Equipe("Sherbrooke"),new Equipe("Montréal"), "2015/10/16 16:55:00");
+        Match match2 = new Match(new Equipe("Sherbrooke"),new Equipe("Ottawa"), "2015/10/16 20:00:00");
+        Match match3 = new Match(new Equipe("Sherbrooke"),new Equipe("Québec"), "2015/10/16 20:00:00");
+        Match match4 = new Match(new Equipe("Sherbrooke"),new Equipe("Vancouver"), "2015/10/16 20:00:00");
         matchs.add(match1);
         matchs.add(match2);
         matchs.add(match3);
         matchs.add(match4);
+        
+        match1.getTemps() ;
     }
 
     public List<Match> getMatchs() {
@@ -56,7 +59,4 @@ public class ListeDesMatchs {
         }
         return s; //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
 }
