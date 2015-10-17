@@ -7,7 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.text.ParseException;
+
+import Match.*;
 
 public class detailMatch extends AppCompatActivity {
 
@@ -24,27 +26,58 @@ public class detailMatch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_match);
 
-        textLocal = (TextView) findViewById(R.id.local);
-        textVisiteur = (TextView) findViewById(R.id.visiteur);
-        textLocalPoint = (TextView) findViewById(R.id.localPoint);
-        textVisiteurPoint = (TextView) findViewById(R.id.visiteurPoint);
+        textLocal = (TextView) findViewById(R.id.domicile);
+        textVisiteur = (TextView) findViewById(R.id.exterieur);
+        textLocalPoint = (TextView) findViewById(R.id.domicilePoint);
+        textVisiteurPoint = (TextView) findViewById(R.id.exterieurPoint);
         textNumPeriode = (TextView) findViewById(R.id.numperiode);
-        textTempsRestant = (TextView) findViewById(R.id.tempsrestant);
+        textTempsRestant = (TextView) findViewById(R.id.tempspasse);
 
         Intent i = getIntent();
 
-        String local = i.getStringExtra("local");
-        String visiteur = i.getStringExtra("visiteur");
-
-        Match match = i.getParcelableExtra("match");
 
 
-        textLocal.setText(local);
-        textVisiteur.setText(visiteur);
-        textVisiteurPoint.setText(String.valueOf(match.getEquipeVisiteur().getScore()));
-        textLocalPoint.setText(String.valueOf(match.getEquipeLocal().getScore()));
-        textNumPeriode.setText("2");
-        textTempsRestant.setText("1:30");
+        Match match = (Match) i.getSerializableExtra("match");
+        long tempspasse = 0;
+        int minutespasse = 0;
+        int secondespasse = 0;
+        int periode = 0;
+
+        textLocal.setText(match.getEquipeDomicile().getNom());
+        textVisiteur.setText(match.getEquipeExterieur().getNom());
+        textVisiteurPoint.setText(String.valueOf(match.getNbButsDomicile()));
+        textLocalPoint.setText(String.valueOf(match.getNbButsExterieur()));
+        try {
+            tempspasse = match.getTemps();
+
+            minutespasse = (int) tempspasse/60;
+            if(minutespasse < 20)
+            {
+                periode = 1;
+                tempspasse = tempspasse%60;
+                secondespasse = (int)tempspasse;
+            }
+            else if(minutespasse > 20)
+            {
+                periode = 2;
+                minutespasse = minutespasse - 20;
+                tempspasse = tempspasse%60;
+                secondespasse = (int)tempspasse;
+            }
+            else if(minutespasse > 40)
+            {
+                periode = 3;
+                minutespasse -= 40;
+                tempspasse = tempspasse%60;
+                secondespasse = (int)tempspasse;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        textNumPeriode.setText(String.valueOf(periode));
+        textTempsRestant.setText(String.valueOf(minutespasse)+":"+String.valueOf(secondespasse));
 
     }
 

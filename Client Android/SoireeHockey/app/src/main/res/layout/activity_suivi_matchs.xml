@@ -26,39 +26,6 @@
 
         </ListView>
 
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/match1"-->
-            <!--android:text="Ottawa vs Montreal \n 21:00"-->
-            <!--android:textSize="15sp"-->
-            <!--android:gravity="center"-->
-        <!--/>-->
 
-        <!--<Space-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="5dp" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/match2"-->
-            <!--android:text="NY Rangers vs Chicago\n 21:00"-->
-            <!--android:textSize="15sp"-->
-            <!--android:gravity="center"-->
-        <!--/>-->
-
-        <!--<Space-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="5dp" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/match3"-->
-            <!--android:text="NY Rangers vs Chicago\n 21:00"-->
-            <!--android:textSize="15sp"-->
-            <!--android:gravity="center"-->
-            <!--/>-->
     </LinearLayout>
 </RelativeLayout>

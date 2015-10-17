@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/local"
+        android:id="@+id/domicile"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -20,24 +20,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/visiteur"
-        android:layout_alignTop="@+id/local"
+        android:id="@+id/exterieur"
+        android:layout_alignTop="@+id/domicile"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/localPoint"
-        android:layout_below="@+id/local"
+        android:id="@+id/domicilePoint"
+        android:layout_below="@+id/domicile"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/visiteurPoint"
-        android:layout_alignTop="@+id/localPoint"
+        android:id="@+id/exterieurPoint"
+        android:layout_alignTop="@+id/domicilePoint"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="periode"
         android:id="@+id/periode"
-        android:layout_below="@+id/visiteurPoint"
+        android:layout_below="@+id/exterieurPoint"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -59,7 +59,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tempsrestant"
+        android:id="@+id/tempspasse"
         android:layout_below="@+id/numperiode"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
@@ -67,7 +67,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Temps restant :"
+        android:text="Temps passe :"
         android:id="@+id/textView"
         android:layout_below="@+id/numperiode"
         android:layout_centerHorizontal="true" />

@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:id="@+id/local"
+        android:id="@+id/domicile"
         android:textStyle="bold"
         android:textSize="20dp"
         />
@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:id="@+id/visiteur"
+        android:id="@+id/exterieur"
         android:layout_alignParentRight="true"
         android:textStyle="bold"
         android:textSize="20dp"
