@@ -49,7 +49,7 @@ public class FilExecutionMatch implements Runnable{
                 
         try {
                 myMatchInfoSocket = new DatagramSocket(serverPort); // port pour les informations
-                System.out.println("Le fil d'actualisation des matchs est lancé, sur à l'IP " + serverIP + " sur le port " + serverPort);
+                System.out.println("Le fil d'actualisation des matchs est lancé, sur l'IP " + serverIP + " sur le port " + serverPort);
 
                 byte[] buffer = new byte[1000];
 
@@ -59,8 +59,7 @@ public class FilExecutionMatch implements Runnable{
                         myMatchInfoSocket.receive(dgp); // réception bloquante
 
                         System.out.println("Request receive !!");
-                        Request Requete = new Request();
-                        //Request Requete = Request.unmarshall(dgp.getData());
+                        Request Requete = Request.unmarshall(dgp.getData());
                         //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on lance un thread qui va aller chercher l'information
                         execute.submit(new RequestHandler(Requete, serverIP, serverPort,matchList));
                 }

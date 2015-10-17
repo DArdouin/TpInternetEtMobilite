@@ -78,7 +78,4 @@ public class Message implements Serializable{
     public void setMatchList(ListeDesMatchs matchList) {
         this.matchList = matchList;
     }
-    
-    
-    
 }

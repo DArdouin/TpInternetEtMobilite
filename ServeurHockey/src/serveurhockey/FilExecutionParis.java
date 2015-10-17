@@ -32,7 +32,7 @@ public class FilExecutionParis implements Runnable{
     
     @Override
     public void run() {
-        System.out.println("Le fil de gestion des paris est lancé, sur à l'IP " + serverIP + " sur le port " + serverPort);
+        System.out.println("Le fil de gestion des paris est lancé, sur l'IP " + serverIP + " sur le port " + serverPort);
     }
     
 }
