@@ -5,7 +5,16 @@
  */
 package serveurhockey;
 
+import Match.ListeDesMatchs;
+import Match.Match;
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import protocole.Request;
+import protocole.RequestHandler;
 
 /**
  *
@@ -23,16 +32,49 @@ public class FilExecutionParis implements Runnable{
     /**
      * Permet de récupérer les requêtes UDP 
      */
-    private DatagramSocket myBetSocket;  
+    private DatagramSocket myBetSocket; 
+    private ListeDesMatchs matchList;
 
-    public FilExecutionParis(String serverIP, int serverPort) {
+    public FilExecutionParis(String serverIP, int serverPort, ListeDesMatchs matchList) {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
+        this.matchList = matchList;
     }
     
     @Override
     public void run() {
-        System.out.println("Le fil de gestion des paris est lancé, sur à l'IP " + serverIP + " sur le port " + serverPort);
+        myBetSocket = null;
+        
+        try {
+                myBetSocket = new DatagramSocket(serverPort); // port pour les paris
+                System.out.println("Le fil de gestion des paris est lancé, sur à l'IP " + serverIP + " sur le port " + serverPort);
+                byte[] buffer = new byte[1000];
+                while (true) {
+                        DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
+                        System.out.println("Waiting for request...");
+                        myBetSocket.receive(dgp); // réception bloquante
+                        System.out.println("Request receive !!");
+                        Request requete = Request.unmarshall(dgp.getData());
+                        
+                        //Thread-per-Object. On va envoyer la requête vers l'objet qui lui correspond. Pour cela, on regarde l'équipe sur laquelle le joueur paris
+                        for(Match m : matchList.getMatchs()){ //On parcours la liste de match 
+                            if(requete.getMatch().getEquipeDomicile().equals(m.getEquipeDomicile().getNom())){ //Si on a la même équipe domicile
+                                if(requete.getMatch().getEquipeExterieur().equals(m.getEquipeExterieur().getNom())){ //Si on a la même équipe extérieur 
+                                    //On ajoute alors le Paris sur le match
+                                    m.ajouterParis(requete.getParis());
+                                }
+                            }
+                        }
+                }
+        } catch (SocketException e) {
+                System.out.println("Socket: " + e.getMessage());
+        } catch (IOException e) {
+                System.out.println("IO: " + e.getMessage());
+        }
+
+        finally {
+                if (myBetSocket != null)myBetSocket.close();
+        }
     }
     
 }

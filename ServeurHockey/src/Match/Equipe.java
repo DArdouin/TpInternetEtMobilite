@@ -5,7 +5,9 @@
  */
 package Match;
 
+import Paris.Paris;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  * Cette classe permet de stocker toutes les informations relatives à un équipe de Hockey
@@ -15,14 +17,14 @@ public class Equipe implements Serializable{
     /**
      * Nom de l'équipe
      */
-    private String nom;    
+    private String nom;
     
     /**
      * Permet de créer une équipe, en mettant initialement le score à 0
      * @param nom Le nom de l'équipe que l'on vient de créer
      */
     public Equipe(String nom){
-        this.nom = nom ;
+        this.nom = nom ;        
     }
 
     /**

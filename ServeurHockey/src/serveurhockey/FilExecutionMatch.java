@@ -5,6 +5,7 @@
  */
 package serveurhockey;
 
+import Match.ListeDesMatchs;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -33,10 +34,12 @@ public class FilExecutionMatch implements Runnable{
      * Permet de récupérer les requêtes UDP 
      */
     private DatagramSocket myMatchInfoSocket;  
+    private ListeDesMatchs matchList;
 
-    public FilExecutionMatch(String serverIP, int serverPort) {
+    public FilExecutionMatch(String serverIP, int serverPort, ListeDesMatchs matchList) {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
+        this.matchList = matchList;
     }
     
     @Override
@@ -55,9 +58,10 @@ public class FilExecutionMatch implements Runnable{
                         System.out.println("Waiting for request...");
                         myMatchInfoSocket.receive(dgp); // réception bloquante
                         System.out.println("Request receive !!");
-                        Request Requete = Request.unmarshall(dgp.getData());
+                        Request requete = Request.unmarshall(dgp.getData());
+                        
                         //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on lance un thread qui va aller chercher l'information
-                        execute.submit(new RequestHandler(Requete, serverIP, serverPort));
+                        execute.submit(new RequestHandler(requete, serverIP, serverPort));
                 }
         } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());

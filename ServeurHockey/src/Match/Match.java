@@ -5,8 +5,12 @@
  */
 package Match;
 
+import Paris.Paris;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 
 /**
  *
@@ -26,7 +30,10 @@ public class Match implements Serializable, Runnable {
     private Integer nbPenaliteExterieur ;
     private Integer nbButsDomicile ;
     private Integer nbButsExterieur ;
-    private Date dateDebut  ;
+    private Date dateDebut  ;    
+    private LinkedList<Paris> listeDeParis;
+    private HashMap<String,Integer> parisEquipeExterieur;
+    private HashMap<String,Integer> parisEquipeDomicile;   
 
     /**
      * Permet de créer un Match, en passant les équipes en paramètres
@@ -42,7 +49,11 @@ public class Match implements Serializable, Runnable {
         nbButsExterieur = 0 ;
         nbPenaliteDomicile = 0 ;
         nbPenaliteExterieur = 0 ;
-        dateDebut = date ;
+        dateDebut = date ;        
+        listeDeParis = new LinkedList<Paris>();
+        //On initialise nos HashMap, qui contiennent les sommes de chaque parieur
+        parisEquipeExterieur = new HashMap<>();
+        parisEquipeDomicile = new HashMap<>();
     }
 
     public Equipe getEquipeDomicile() {
@@ -113,11 +124,78 @@ public class Match implements Serializable, Runnable {
     public String toString() {
         return " " + equipeDomicile.getNom() + " Versus " + equipeExterieur.getNom() ;
     }
+    
+     /**
+     * Permet d'ajouter un Paris à la queue
+     * @param p Le paris à ajouter dans la liste
+     */
+    public void ajouterParis(Paris p){
+        listeDeParis.add(p);
+    }
 
+    /**
+     * C'est ici que l'on va gérer les paris (calcul des sommes, ...)
+     */
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int totalEquipeDomicile = 0;
+        int totalEquipeExterieur = 0;
+        boolean matchEnCours = true;
+        //while négatif, on attend le début du match
+        
+        while(matchEnCours){ //Tant que notre match n'est pas terminé --> while getTemps()>0
+            //On récupère le paris dans la liste 
+            Paris nouveauParis = listeDeParis.getFirst();
+            if(nouveauParis.getNomDeLequipe().equals(getEquipeDomicile().getNom())) //On cherche sur quelle équipe parier
+                monCompute(parisEquipeDomicile, nouveauParis);//On ajoute le paris à la liste
+            else if(nouveauParis.getNomDeLequipe().equals(getEquipeExterieur().getNom())) //On cherche sur quelle équipe parier
+                monCompute(parisEquipeExterieur, nouveauParis);
+            avertirParisOk(nouveauParis);
+        }
+        
+        //Le match est terminé, on envois la somme à tout les gagnants
+        if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne
+            avertirParieursGagnants(parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
+        }else{
+            avertirParieursGagnants(parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+        }
     }
     
+    /**
+     * Permet d'ajouter un paris pour une équipe
+     * @param map La table contenant les paris d'une équipe
+     * @param nouveauParis Le paris que l'on veut record
+     */
+    private void monCompute(HashMap map, Paris nouveauParis){
+        if(map.get(nouveauParis.getIpParieur()) == null)
+            map.put(nouveauParis.getIpParieur(),nouveauParis.getParis()); //Si la clé n'existe pas, on l'ajoute
+        else
+        {
+            int montantParie = (int) map.get(nouveauParis.getIpParieur()); //On récupère la somme actuelle
+            montantParie += nouveauParis.getParis();
+            map.put(nouveauParis.getIpParieur(), montantParie); //On modifie le paris présent dans notre HashMap
+        }
+    }
     
+    private void avertirParieursGagnants(HashMap<String,Integer> map){
+        int montantTotal = 0;
+        double prorata = 0.0;
+        int gain = 0;
+        //On calcul le montant total parié
+        for(int montant : map.values()){
+            montantTotal += montant;
+        }
+        //On parcours notre table de parieurs
+        for(String currentKey : map.keySet()){
+            //On calcul la somme gagnée
+            prorata = (map.get(currentKey) / montantTotal) * 100;
+            gain = (int) (0.75 * montantTotal * prorata);
+            //On envoie le message au client
+            
+        }
+    }
+    
+    private void avertirParisOk(Paris nouveauParis){
+        //On envois le message au client
+    }
 }

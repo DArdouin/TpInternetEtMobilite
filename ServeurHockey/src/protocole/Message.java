@@ -6,7 +6,11 @@
 package protocole;
 
 import Match.Match;
+import Paris.Paris;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
@@ -14,16 +18,18 @@ import java.io.Serializable;
  */
 public class Message implements Serializable{
     public enum methodes {
-            updateMatchInfo, parier, demandeListMatch
+            updateMatchInfo, parier, demandeListMatch, confirmerParis, indiquerParisGagnant
     };
     
     private boolean request ;
-    
     private int numeroRequete;
-    private methodes methode; 
-    private Object[] argument; // positionGPS  positionGPS  noTaxi
+    private methodes methode;
+    private Paris paris;
     private String message;
-    private Match match ;
+    private Match match;
+
+    public Message() {
+    }
     
     public boolean isRequest(){
         return this.request;
@@ -56,5 +62,12 @@ public class Message implements Serializable{
     public void setMatch(Match leMatch) {
         this.match = leMatch;
     }
-    
+
+    public void setParis(Paris paris) {
+        this.paris = paris;
+    }
+
+    public Paris getParis() {
+        return paris;
+    }    
 }
