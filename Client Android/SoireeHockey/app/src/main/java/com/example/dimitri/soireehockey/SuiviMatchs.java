@@ -16,6 +16,12 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 import Match.ListeDesMatchs;
+import protocole.Methodes;
+import protocole.Request;
 
 
 public class SuiviMatchs extends AppCompatActivity {
@@ -35,8 +43,6 @@ public class SuiviMatchs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suivi_matchs);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
         for(int i = 0; i < 10; i++) {
             Request requete = new Request();
@@ -48,7 +54,7 @@ public class SuiviMatchs extends AppCompatActivity {
 
             try {
                 DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("192.168.0.52"), 11111);
-                
+
                 DatagramSocket asocket = new DatagramSocket();
 
                 System.out.println("Envoi de la requête...");
@@ -65,11 +71,7 @@ public class SuiviMatchs extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-=======
->>>>>>> origin/Dimitri
-=======
->>>>>>> parent of bab1978... Mise à jour
+        
         listematch = (ListView) findViewById(R.id.listeMatch);
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
         try {

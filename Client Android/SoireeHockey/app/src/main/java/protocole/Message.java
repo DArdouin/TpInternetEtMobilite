@@ -1,7 +1,4 @@
-/*
 package protocole;
-
-*/
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,17 +13,18 @@ import Match.*;
 import java.io.Serializable;
 
 */
-<<<<<<< HEAD
-=======
+
 
 import java.io.Serializable;
 
 import Match.ListeDesMatchs;
+import protocole.Methodes;
+import Match.*;
 
->>>>>>> parent of bab1978... Mise à jour
+
 /**
  * Created by Dimitri on 16/10/2015.
- *//*
+ */
 
 public class Message implements Serializable {
 
@@ -98,4 +96,4 @@ public class Message implements Serializable {
 
 
 }
-*/
+
