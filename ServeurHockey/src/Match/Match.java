@@ -5,7 +5,6 @@
  */
 package Match;
 
-import Paris.Paris;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.DatagramPacket;
@@ -19,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import protocole.Methodes;
@@ -75,25 +73,30 @@ public class Match implements Serializable, Runnable{
         return equipeExterieur;
     }
 
-    public long getTemps() throws ParseException {
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date actualDate = new Date();
-        Date scheduledDate = format.parse(dateDebut);
-        
-        long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
-        
-        System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
-        System.out.println("Diff : " + diff);
-        System.out.println("Secondes : " + diff / 1000);
-        
-        if(diff < 0 ){
-            return -1 ;
-        }
-        else if(diff >= (60*60)){
-            return 0 ;
-        }
-        else {
-            return diff ;
+    public long getTemps(){
+        try {
+            DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date actualDate = new Date();
+            Date scheduledDate = format.parse(dateDebut);
+            
+            long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
+            
+            System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
+            System.out.println("Diff : " + diff);
+            System.out.println("Secondes : " + diff / 1000);
+            
+            if(diff < 0 ){
+                return -1 ;
+            }
+            else if(diff >= (60*60)){
+                return 0 ;
+            }
+            else {
+                return diff ;
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
 
@@ -163,12 +166,11 @@ public class Match implements Serializable, Runnable{
      */
     @Override
     public void run() {
-        int totalEquipeDomicile = 0;
-        int totalEquipeExterieur = 0;
-        boolean matchEnCours = true;
-        //while négatif, on attend le début du match
+        //On attend le début du match
+        while(getTemps()<0);
         
-        while(matchEnCours){ //Tant que notre match n'est pas terminé --> while getTemps()>0
+        //Tant que notre seconde mi-temps n'est pas terminée
+        while(getTemps()<=40){
             //On récupère le paris dans la liste de requête
             Request nouvelleRequete = listeDeRequete.getFirst();
             if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeDomicile().getNom())) //On cherche sur quelle équipe parier
@@ -177,6 +179,9 @@ public class Match implements Serializable, Runnable{
                 monCompute(parisEquipeExterieur, nouvelleRequete);
             avertirParisOk(nouvelleRequete);
         }
+        
+        //On attend la fin du match
+        while(getTemps()!=0);
         
         //Le match est terminé, on envois la somme à tout les gagnants
         if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne

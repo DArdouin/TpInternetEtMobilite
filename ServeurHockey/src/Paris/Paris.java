@@ -5,11 +5,13 @@
  */
 package Paris;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Damien
  */
-public class Paris {
+public class Paris implements Serializable{
     private String nomDeLequipe;
     private int paris;
     private String ipParieur;

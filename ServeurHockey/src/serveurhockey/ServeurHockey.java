@@ -13,10 +13,13 @@ import java.net.SocketException;
 import protocole.Request ;
 import protocole.RequestHandler;
 import Match.* ;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Damien
  */
 public class ServeurHockey {
@@ -43,7 +46,12 @@ public class ServeurHockey {
      */
     public static void main(String[] args) throws ParseException {
         
-        String serverIP = "192.168.0.60" ;
+        String serverIP = new String ("");
+        try {
+            serverIP = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(ServeurHockey.class.getName()).log(Level.SEVERE, null, ex);
+        }
         int matchPort = 11111 ;
         int parisPort = 22222;
         // TODO code application logic here

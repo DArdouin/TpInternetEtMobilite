@@ -60,7 +60,9 @@ public class FilExecutionMatch implements Runnable{
 
                         System.out.println("Request receive !!");
                         Request Requete = Request.unmarshall(dgp.getData());
-                        //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on lance un thread qui va aller chercher l'information
+                     
+                        //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on place la requête dans le pool de thread
+                       execute.submit(new RequestHandler(Requete, serverIP, serverPort, matchList));
                 }
         } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
@@ -70,7 +72,6 @@ public class FilExecutionMatch implements Runnable{
 
         finally {
                 if (myMatchInfoSocket != null)myMatchInfoSocket.close();
-                execute.shutdown();
         }
     }
 }

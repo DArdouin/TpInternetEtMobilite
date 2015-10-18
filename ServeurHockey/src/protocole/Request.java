@@ -16,7 +16,7 @@ import org.apache.commons.lang3.SerializationUtils;
  */
 public class Request extends Message {
     
-    private String adress ; 
+    private String address ; 
     private int port ;
     
     public static Request unmarshall(byte[] request) {
@@ -31,7 +31,7 @@ public class Request extends Message {
 
     public String getAddress() {
             // TODO Auto-generated method stub
-            return adress ;
+            return address ;
     }
 
     public int getPort() {
@@ -39,8 +39,8 @@ public class Request extends Message {
             return port;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setPort(int port) {

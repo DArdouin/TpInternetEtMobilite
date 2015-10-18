@@ -5,6 +5,7 @@
  */
 package Match;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.List;
  * 
  * @author Damien
  */
-public class ListeDesMatchs {
+public class ListeDesMatchs implements Serializable {
     
     private List<Match> matchs ; 
     
@@ -51,6 +52,14 @@ public class ListeDesMatchs {
         matchs.remove(match);
     }
 
+    public Match chercherMatch(Match match){
+        for(Match m : matchs){
+            if(m.toString().equals(match.toString()))
+                return m;
+        }
+        return null;
+    }
+    
     @Override
     public String toString() {
         String s = "Liste des matchs :"; 
