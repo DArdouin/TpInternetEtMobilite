@@ -45,20 +45,26 @@ public class SuiviMatchs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suivi_matchs);
 
+
         for(int i = 0; i < 10; i++) {
             Request requete = new Request();
-            requete.setAdress("96.21.161.134");
+            requete.setAdress("192.168.0.60");
             requete.setPort(11111);
             requete.setMethode(Methodes.demandeListMatch);
             byte[] buff = Request.marshall(requete);
 
 
             try {
-                DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("70.81.239.83"), 11111);
+                DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("192.168.0.52"), 11111);
                 
-                DatagramSocket asocket = new DatagramSocket(11111,InetAddress.getByName("70.81.239.83"));
+                DatagramSocket asocket = new DatagramSocket();
 
+                System.out.println("Envoi de la requête...");
                 asocket.send(out);
+
+                System.out.println("En attente de réponse..");
+                asocket.receive(out);
+                System.out.println("Réponse reçue !");
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (SocketException e) {
