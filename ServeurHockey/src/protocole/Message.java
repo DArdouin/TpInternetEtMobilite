@@ -25,6 +25,7 @@ public class Message implements Serializable{
     private String message;
     private Match match;
     private ListeDesMatchs matchList;
+    private int gain;
 
     public Message() {
     }
@@ -82,5 +83,13 @@ public class Message implements Serializable{
 
     public void setMatchList(ListeDesMatchs matchList) {
         this.matchList = matchList;
+    }
+
+    public void setGain(int gain) {
+        this.gain = gain;
+    }
+    
+    public int getGain(){
+        return gain;
     }
 }

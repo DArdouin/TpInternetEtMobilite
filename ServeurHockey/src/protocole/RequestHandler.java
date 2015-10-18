@@ -14,7 +14,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import protocole.Methodes ;
 
 
 /**
@@ -40,7 +39,7 @@ public class RequestHandler implements Runnable{
         
         try {
             byte[] buf = new byte[1000];
-            buf = Request.marshall(request);
+            buf = Request.marshall(messageToSend);
 
             DatagramPacket out = new DatagramPacket(buf, buf.length, InetAddress.getByName(address), port);
 
@@ -66,12 +65,14 @@ public class RequestHandler implements Runnable{
                     Request r = new Request(); 
                     r.setMatchList(this.matchList);
                     r.setNumeroRequete(this.request.getNumeroRequete());
+                    r.setMethode(Methodes.listeMatchs);
                     transmettre(r, this.request.getAddress(),this.request.getPort());
                     break ;
                 case updateMatchInfo : 
                     Request r2 = new Request() ;
                     r2.setMatch(this.request.getMatch());
                     r2.setNumeroRequete(this.request.getNumeroRequete());
+                    r2.setMethode(Methodes.infosMatchs);
                     transmettre(r2, this.request.getAddress(),this.request.getPort());
                     break ;
             }

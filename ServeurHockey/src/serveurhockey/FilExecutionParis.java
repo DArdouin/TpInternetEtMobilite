@@ -61,7 +61,7 @@ public class FilExecutionParis implements Runnable{
                             if(requete.getMatch().getEquipeDomicile().equals(m.getEquipeDomicile().getNom())){ //Si on a la même équipe domicile
                                 if(requete.getMatch().getEquipeExterieur().equals(m.getEquipeExterieur().getNom())){ //Si on a la même équipe extérieur 
                                     //On ajoute alors le Paris sur le match
-                                    m.ajouterParis(requete.getParis());
+                                    m.ajouterRequete(requete);
                                 }
                             }
                         }

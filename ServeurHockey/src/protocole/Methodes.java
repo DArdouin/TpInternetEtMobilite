@@ -12,5 +12,9 @@ package protocole;
 public enum Methodes {
     updateMatchInfo, 
     parier, 
-    demandeListMatch
+    demandeListMatch,
+    confirmerParis,
+    annoncerGains,
+    listeMatchs,
+    infosMatchs
 }
