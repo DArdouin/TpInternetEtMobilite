@@ -13,23 +13,14 @@ import java.io.Serializable;
  */
 public class Paris implements Serializable{
     private String nomDeLequipe;
-    private int paris;
-    private String ipParieur;
+    private int somme;
 
-    public String getIpParieur() {
-        return ipParieur;
+    public int getSomme() {
+        return somme;
     }
 
-    public void setIpParieur(String ipParieur) {
-        this.ipParieur = ipParieur;
-    }
-
-    public int getParis() {
-        return paris;
-    }
-
-    public void setParis(int paris) {
-        this.paris = paris;
+    public void setSomme(int somme) {
+        this.somme = somme;
     }
 
     public String getNomDeLequipe() {

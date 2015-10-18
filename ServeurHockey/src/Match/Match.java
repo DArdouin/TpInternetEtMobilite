@@ -197,14 +197,14 @@ public class Match implements Serializable, Runnable{
      * @param nouveauParis Le paris que l'on veut record
      */
     private void monCompute(HashMap<String,Request> map, Request nouvelleRequete){
-        if(map.get(nouvelleRequete.getParis().getIpParieur()) == null)
-            map.put(nouvelleRequete.getParis().getIpParieur(),nouvelleRequete); //Si la clé n'existe pas, on l'ajoute
+        if(map.get(nouvelleRequete.getAddress()) == null)
+            map.put(nouvelleRequete.getAddress(),nouvelleRequete); //Si la clé n'existe pas, on l'ajoute
         else
         {
-            int montantParie = (int) map.get(nouvelleRequete.getParis().getIpParieur()).getParis().getParis(); //On récupère le montant du paris contenu dans notre requête
-            montantParie += nouvelleRequete.getParis().getParis();
-            nouvelleRequete.getParis().setParis(montantParie); //On modifie le montant du paris contenu dans notre requête
-            map.put(nouvelleRequete.getParis().getIpParieur(), nouvelleRequete); //On modifie le paris présent dans notre HashMap
+            int montantParie = (int) map.get(nouvelleRequete.getAddress()).getParis().getSomme(); //On récupère le montant du paris contenu dans notre requête
+            montantParie += nouvelleRequete.getParis().getSomme();
+            nouvelleRequete.getParis().setSomme(montantParie); //On modifie le montant du paris contenu dans notre requête
+            map.put(nouvelleRequete.getAddress(), nouvelleRequete); //On modifie le paris présent dans notre HashMap
         }
     }
     
@@ -214,12 +214,12 @@ public class Match implements Serializable, Runnable{
         int gain = 0;
         //On calcul le montant total parié
         for(Request r : map.values()){
-            montantTotal += r.getParis().getParis();
+            montantTotal += r.getParis().getSomme();
         }
         //On parcours notre table de parieurs
         for(String currentKey : map.keySet()){
             //On calcul la somme gagnée
-            prorata = (map.get(currentKey).getParis().getParis() / montantTotal) * 100;
+            prorata = (map.get(currentKey).getParis().getSomme()/ montantTotal) * 100;
             gain = (int) (0.75 * montantTotal * prorata);
             //On envoie le message au client
             Request r = new Request(); //On crée un nouveau message, contenant les gains
@@ -242,6 +242,7 @@ public class Match implements Serializable, Runnable{
     
     public void transmettre(Request messageToSend, String address, int port) throws UnknownHostException, IOException{
         DatagramSocket aSocket = new DatagramSocket();
+        
 
         try {
             byte[] buf = new byte[1000];
