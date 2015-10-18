@@ -36,6 +36,7 @@ public class SuiviMatchs extends AppCompatActivity {
         setContentView(R.layout.activity_suivi_matchs);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         for(int i = 0; i < 10; i++) {
             Request requete = new Request();
@@ -67,6 +68,8 @@ public class SuiviMatchs extends AppCompatActivity {
 
 =======
 >>>>>>> origin/Dimitri
+=======
+>>>>>>> parent of bab1978... Mise à jour
         listematch = (ListView) findViewById(R.id.listeMatch);
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
         try {

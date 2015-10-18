@@ -16,6 +16,14 @@ import Match.*;
 import java.io.Serializable;
 
 */
+<<<<<<< HEAD
+=======
+
+import java.io.Serializable;
+
+import Match.ListeDesMatchs;
+
+>>>>>>> parent of bab1978... Mise à jour
 /**
  * Created by Dimitri on 16/10/2015.
  *//*
