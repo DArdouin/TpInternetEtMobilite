@@ -2,8 +2,10 @@ package com.example.dimitri.soireehockey;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,40 +40,16 @@ public class SuiviMatchs extends AppCompatActivity {
     private ListView listematch;
     private ListeDesMatchs listeDesMatchs;
 
+    private static final String TAG = SuiviMatchs.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suivi_matchs);
 
+        AsyncTask task = new SendFeedBackJob().execute();
+        task.
 
-        for(int i = 0; i < 10; i++) {
-            Request requete = new Request();
-            requete.setAdress("192.168.0.60");
-            requete.setPort(11111);
-            requete.setMethode(Methodes.demandeListMatch);
-            byte[] buff = Request.marshall(requete);
-
-
-            try {
-                DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("192.168.0.52"), 11111);
-
-                DatagramSocket asocket = new DatagramSocket();
-
-                System.out.println("Envoi de la requête...");
-                asocket.send(out);
-
-                System.out.println("En attente de réponse..");
-                asocket.receive(out);
-                System.out.println("Réponse reçue !");
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        
         listematch = (ListView) findViewById(R.id.listeMatch);
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
         try {
