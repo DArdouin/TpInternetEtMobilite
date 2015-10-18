@@ -241,8 +241,7 @@ public class Match implements Serializable, Runnable{
     }
     
     public void transmettre(Request messageToSend, String address, int port) throws UnknownHostException, IOException{
-        DatagramSocket aSocket = new DatagramSocket();
-        
+        DatagramSocket aSocket = new DatagramSocket();        
 
         try {
             byte[] buf = new byte[1000];
