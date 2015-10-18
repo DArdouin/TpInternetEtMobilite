@@ -16,13 +16,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import Match.ListeDesMatchs;
-import protocole.Methodes;
-import protocole.Request;
 
 
 public class SuiviMatchs extends AppCompatActivity {
@@ -39,12 +30,12 @@ public class SuiviMatchs extends AppCompatActivity {
     private ListView listematch;
     private ListeDesMatchs listeDesMatchs;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suivi_matchs);
 
+<<<<<<< HEAD
 
         for(int i = 0; i < 10; i++) {
             Request requete = new Request();
@@ -74,6 +65,8 @@ public class SuiviMatchs extends AppCompatActivity {
             }
         }
 
+=======
+>>>>>>> origin/Dimitri
         listematch = (ListView) findViewById(R.id.listeMatch);
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
         try {

@@ -16,10 +16,6 @@ import org.apache.commons.lang3.SerializationUtils;
  */
 
 public class Request extends Message {
-
-    private String adress ;
-    private int port ;
-
     public static Request unmarshall(byte[] request) {
         // TODO Auto-generated method stub
 
@@ -31,22 +27,14 @@ public class Request extends Message {
         return SerializationUtils.serialize((Serializable) requete);
     }
 
-    public String getAddress() {
+    public int getAddress() {
         // TODO Auto-generated method stub
-        return adress;
+        return 0;
     }
 
-    public int getPort() {
+    public SocketAddress getPort() {
         // TODO Auto-generated method stub
-        return port;
-    }
-
-    public void setAdress(String adress) {
-        this.adress = adress;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+        return null;
     }
 }
 
