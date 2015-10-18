@@ -16,13 +16,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import Match.ListeDesMatchs;
-import protocole.Methodes;
-import protocole.Request;
 
 
 public class SuiviMatchs extends AppCompatActivity {
@@ -39,34 +30,10 @@ public class SuiviMatchs extends AppCompatActivity {
     private ListView listematch;
     private ListeDesMatchs listeDesMatchs;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suivi_matchs);
-
-        for(int i = 0; i < 10; i++) {
-            Request requete = new Request();
-            requete.setAdress("96.21.161.134");
-            requete.setPort(11111);
-            requete.setMethode(Methodes.demandeListMatch);
-            byte[] buff = Request.marshall(requete);
-
-
-            try {
-                DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("70.81.239.83"), 11111);
-                
-                DatagramSocket asocket = new DatagramSocket(11111,InetAddress.getByName("70.81.239.83"));
-
-                asocket.send(out);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
         listematch = (ListView) findViewById(R.id.listeMatch);
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
