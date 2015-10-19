@@ -197,14 +197,16 @@ public class Match implements Serializable, Runnable{
             }
             
             //Le match est terminé, on envois la somme à tout les gagnants
-            if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne
+            if(nbButsDomicile.compareTo(nbButsExterieur) > 0){ //Si l'équipe domicile gagne
                 avertirParieursGagnants(parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
+                System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeDomicile.getNom());
             }
             else if(nbButsDomicile.equals(nbButsExterieur)) {
-                System.out.println("Egalité !");
+                System.out.println("Resultat du match : " + toString() + " --> Egalité !");
             }
             else{
                 avertirParieursGagnants(parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+                System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeExterieur.getNom());
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
