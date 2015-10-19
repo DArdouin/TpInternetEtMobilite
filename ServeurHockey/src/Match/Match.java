@@ -180,6 +180,7 @@ public class Match implements Serializable, Runnable{
                     avertirParisOk(nouvelleRequete, nouvelleRequete.getAddress(), nouvelleRequete.getPort());
                 } 
                 else {
+                    
                     Thread.sleep(1000);
                 }
             }
@@ -198,14 +199,17 @@ public class Match implements Serializable, Runnable{
             
             //Le match est terminé, on envois la somme à tout les gagnants
             if(nbButsDomicile.compareTo(nbButsExterieur) > 0){ //Si l'équipe domicile gagne
-                avertirParieursGagnants(parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
+                avertirParieursGagnants(parisEquipeDomicile,parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+                avertirParieursPerdants(parisEquipeExterieur);
                 System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeDomicile.getNom());
             }
             else if(nbButsDomicile.equals(nbButsExterieur)) {
                 System.out.println("Resultat du match : " + toString() + " --> Egalité !");
+                avertirParieursPerdants(parisEquipeExterieur);
+                avertirParieursPerdants(parisEquipeDomicile);
             }
             else{
-                avertirParieursGagnants(parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+                avertirParieursGagnants(parisEquipeExterieur,parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
                 System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeExterieur.getNom());
             }
         } catch (InterruptedException ex) {
@@ -230,19 +234,38 @@ public class Match implements Serializable, Runnable{
         }
     }
     
-    private void avertirParieursGagnants(HashMap<String,Request> map){
+    private void avertirParieursGagnants(HashMap<String,Request> mapGagnants, HashMap<String,Request> mapPerdants){
         int montantTotal = 0;
         double prorata = 0.0;
         int gain = 0;
         //On calcul le montant total parié
-        for(Request r : map.values()){
+        for(Request r : mapGagnants.values()){
+            montantTotal += r.getParis().getSomme();
+        }
+        for(Request r : mapPerdants.values()){
             montantTotal += r.getParis().getSomme();
         }
         //On parcours notre table de parieurs
-        for(String currentKey : map.keySet()){
+        for(String currentKey : mapGagnants.keySet()){
             //On calcul la somme gagnée
-            prorata = (map.get(currentKey).getParis().getSomme()/ montantTotal) * 100;
+            prorata = (mapGagnants.get(currentKey).getParis().getSomme()/ montantTotal) * 100;
             gain = (int) (0.75 * montantTotal * prorata);
+            //On envoie le message au client
+            Request r = new Request(); //On crée un nouveau message, contenant les gains
+            r.setMethode(Methodes.annoncerGains);
+            r.setGain(gain);
+            try {
+                transmettre(r, mapGagnants.get(currentKey).getAddress(), mapGagnants.get(currentKey).getPort());
+            } catch (IOException ex) {
+                Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+     private void avertirParieursPerdants(HashMap<String,Request> map){
+       int gain = -1; //Car on a perdu
+        //On parcours notre table de parieurs
+        for(String currentKey : map.keySet()){
             //On envoie le message au client
             Request r = new Request(); //On crée un nouveau message, contenant les gains
             r.setMethode(Methodes.annoncerGains);

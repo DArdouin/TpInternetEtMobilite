@@ -24,7 +24,7 @@ public class ListeDesMatchs implements Serializable {
     
     public ListeDesMatchs() throws ParseException{
         matchs = new ArrayList<>(); 
-        String dateMatch = "2015/10/19 19:12:30" ;
+        String dateMatch = "2015/10/19 19:35:10" ;
         Match match1 = new Match(new Equipe("Sherbrooke"),new Equipe("Montréal"), dateMatch);
         Match match2 = new Match(new Equipe("Sherbrooke"),new Equipe("Ottawa"), dateMatch);
         Match match3 = new Match(new Equipe("Sherbrooke"),new Equipe("Québec"), dateMatch);
