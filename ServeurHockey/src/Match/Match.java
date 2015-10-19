@@ -168,7 +168,7 @@ public class Match implements Serializable, Runnable{
     public void run() {
         try {
             //Tant que notre seconde mi-temps n'est pas terminée
-            while(getTemps()<=3000){
+            while(getTemps()<=30){
                 if(!listeDeRequete.isEmpty()){
                     //On récupère le paris dans la liste de requête
                     Request nouvelleRequete = listeDeRequete.removeFirst();
@@ -180,13 +180,21 @@ public class Match implements Serializable, Runnable{
                     avertirParisOk(nouvelleRequete, nouvelleRequete.getAddress(), nouvelleRequete.getPort());
                 } 
                 else {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 }
             }
             
             //On attend la fin du match
-            while(getTemps()!=0)
-                Thread.sleep(30000);
+            while(getTemps() < 45){
+                if(!listeDeRequete.isEmpty()){
+                    //On récupère le paris dans la liste de requête
+                    Request nouvelleRequete = listeDeRequete.removeFirst();
+                    avertirParisPasOk(nouvelleRequete, nouvelleRequete.getAddress(), nouvelleRequete.getPort()); //Paris refusé car on est en 3ème partie de match
+                } 
+                else {
+                    Thread.sleep(1000);
+                }
+            }
             
             //Le match est terminé, on envois la somme à tout les gagnants
             if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne
@@ -251,7 +259,18 @@ public class Match implements Serializable, Runnable{
             Request r = new Request();
             r.setMethode(Methodes.confirmerParis); //Permet de confirmer une requête
             r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
-
+            transmettre(r, address , port);
+        } catch (IOException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void avertirParisPasOk(Request nouvelleRequete, String address, int port){
+        try {
+            //On envois le message au client
+            Request r = new Request();
+            r.setMethode(Methodes.refuserParis); //Permet de confirmer une requête
+            r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
             transmettre(r, address , port);
         } catch (IOException ex) {
             Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);

@@ -14,6 +14,7 @@ public enum Methodes {
     parier, 
     demandeListMatch,
     confirmerParis,
+    refuserParis,
     annoncerGains,
     listeMatchs,
     infosMatchs
