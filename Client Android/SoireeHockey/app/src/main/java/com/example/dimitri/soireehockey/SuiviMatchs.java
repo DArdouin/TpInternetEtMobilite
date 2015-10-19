@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import Match.ListeDesMatchs;
 import protocole.Methodes;
@@ -39,18 +40,28 @@ public class SuiviMatchs extends AppCompatActivity {
 
     private ListView listematch;
     private ListeDesMatchs listeDesMatchs;
+    private SendFeedBackJob task = null;
 
-    private static final String TAG = SuiviMatchs.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suivi_matchs);
-
-        AsyncTask task = new SendFeedBackJob().execute();
-        
-
         listematch = (ListView) findViewById(R.id.listeMatch);
+
+        task = new SendFeedBackJob(SuiviMatchs.this);
+        AsyncTask<Void, Void, Request> retour = task.execute();
+
+//        try {
+//            listeDesMatchs = retour.get().getMatchList();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+
+
+
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
         try {
             listeDesMatchs = new ListeDesMatchs();

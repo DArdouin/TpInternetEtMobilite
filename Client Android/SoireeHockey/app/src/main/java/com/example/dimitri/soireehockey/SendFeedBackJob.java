@@ -3,6 +3,7 @@ package com.example.dimitri.soireehockey;
 import android.os.AsyncTask;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -15,9 +16,18 @@ import protocole.Request;
 /**
  * Created by Quentin on 18/10/15.
  */
-public class SendFeedBackJob extends AsyncTask {
+public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
+
+    private WeakReference<SuiviMatchs> mActivity = null;
+
+    public SendFeedBackJob(SuiviMatchs suiviMatch)
+    {
+        link(suiviMatch);
+    }
+
+
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected Request doInBackground(Void... params) {
         Request requete = new Request();
         requete.setAddress("96.21.161.134");
         requete.setPort(11111);
@@ -56,4 +66,9 @@ public class SendFeedBackJob extends AsyncTask {
         }
         return null ;
     }
+
+    public void link (SuiviMatchs pActivity) {
+        mActivity = new WeakReference<SuiviMatchs>(pActivity);
+    }
+
 }
