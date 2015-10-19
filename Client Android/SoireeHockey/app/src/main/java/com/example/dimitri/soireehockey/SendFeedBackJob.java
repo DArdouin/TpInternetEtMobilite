@@ -22,7 +22,7 @@ public class SendFeedBackJob extends AsyncTask {
         requete.setAddress("96.21.161.134");
         requete.setPort(11111);
         requete.setMethode(Methodes.demandeListMatch);
-        requete.setMessage("Coucou Quentin. Vois tu mon message ?");
+        //requete.setMessage("Coucou Quentin. Vois tu mon message ?");
         byte[] buff = Request.marshall(requete);
 
 

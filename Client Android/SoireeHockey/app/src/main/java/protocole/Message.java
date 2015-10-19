@@ -11,6 +11,7 @@ import java.io.Serializable;
 import Match.ListeDesMatchs;
 import protocole.Methodes;
 import Match.*;
+import Paris.Paris;
 
 
 /**
@@ -102,6 +103,6 @@ public class Message implements Serializable {
     public int getGain(){
         return gain;
     }
-
+    
 }
 
