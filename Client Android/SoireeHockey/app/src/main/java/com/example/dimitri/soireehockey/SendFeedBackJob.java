@@ -22,21 +22,27 @@ public class SendFeedBackJob extends AsyncTask {
         requete.setAddress("96.21.161.134");
         requete.setPort(11111);
         requete.setMethode(Methodes.demandeListMatch);
-        //requete.setMessage("Coucou Quentin. Vois tu mon message ?");
-        byte[] buff = Request.marshall(requete);
+        byte[] buffout = Request.marshall(requete);
+        byte[] buffin = new byte[3000];
 
 
         try {
-            DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("70.81.239.83"), 11111);
-
-            DatagramSocket asocket = new DatagramSocket();
+            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("70.81.239.83"), 11111);
+            DatagramSocket outsocket = new DatagramSocket();
 
             System.out.println("Envoi de la requête...");
-            asocket.send(out);
+            outsocket.send(out);
+            if(outsocket != null)
+                outsocket.close();
+
+
+            DatagramPacket in = new DatagramPacket(buffin, buffin.length);
+            DatagramSocket insocket = new DatagramSocket(11111);
+            //insocket.setSoTimeout(20000);
 
             System.out.println("En attente de réponse..");
-            asocket.receive(out);
-            Request response = Request.unmarshall(out.getData()) ;
+            insocket.receive(in);
+            Request response = Request.unmarshall(in.getData()) ;
             System.out.println("Réponse reçue !");
 
             return response ;
