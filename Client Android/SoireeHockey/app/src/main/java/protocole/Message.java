@@ -3,16 +3,7 @@ package protocole;
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
- *//*
-
-
-import java.io.Serializable;
-
-
-import Match.*;
-import java.io.Serializable;
-
-*/
+ */
 
 
 import java.io.Serializable;
@@ -29,13 +20,25 @@ import Match.*;
 public class Message implements Serializable {
 
     private boolean request ;
-
     private int numeroRequete;
     private Methodes methode;
-    private Object[] argument; // positionGPS  positionGPS  noTaxi
+    private Paris paris;
     private String message;
-    private Match match ;
-    private ListeDesMatchs matchList ;
+    private Match match;
+    private ListeDesMatchs matchList;
+    private int gain;
+
+    public Message() {
+        request = true;
+        numeroRequete = 1;
+        methode = null;
+        paris = null;
+        message = null;
+        match = null;
+        matchList = null;
+        gain = 0;
+
+    }
 
     public boolean isRequest(){
         return this.request;
@@ -69,6 +72,13 @@ public class Message implements Serializable {
         this.match = leMatch;
     }
 
+    public void setParis(Paris paris) {
+        this.paris = paris;
+    }
+
+    public Paris getParis() {
+        return paris;
+    }
     public Methodes getMethode() {
         return methode;
     }
@@ -77,23 +87,21 @@ public class Message implements Serializable {
         this.methode = methode;
     }
 
-    public Object[] getArgument() {
-        return argument;
-    }
-
     public ListeDesMatchs getMatchList() {
         return matchList;
-    }
-
-    public void setArgument(Object[] argument) {
-        this.argument = argument;
     }
 
     public void setMatchList(ListeDesMatchs matchList) {
         this.matchList = matchList;
     }
 
+    public void setGain(int gain) {
+        this.gain = gain;
+    }
 
+    public int getGain(){
+        return gain;
+    }
 
 }
 

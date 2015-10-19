@@ -48,7 +48,7 @@ public class SuiviMatchs extends AppCompatActivity {
         setContentView(R.layout.activity_suivi_matchs);
 
         AsyncTask task = new SendFeedBackJob().execute();
-        task.
+        
 
         listematch = (ListView) findViewById(R.id.listeMatch);
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();

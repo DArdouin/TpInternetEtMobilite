@@ -11,7 +11,7 @@ import java.util.List;
 public class ListeDesMatchs implements Serializable{
     private List<Match> matchs ;
 
-    public ListeDesMatchs() throws ParseException {
+    public ListeDesMatchs() throws ParseException{
         matchs = new ArrayList<>();
         Match match1 = new Match(new Equipe("Sherbrooke"),new Equipe("Montréal"), "2015/10/16 16:55:00");
         Match match2 = new Match(new Equipe("Sherbrooke"),new Equipe("Ottawa"), "2015/10/16 20:00:00");
@@ -39,6 +39,14 @@ public class ListeDesMatchs implements Serializable{
 
     public void deleteMatch(Match match){
         matchs.remove(match);
+    }
+
+    public Match chercherMatch(Match match){
+        for(Match m : matchs){
+            if(m.toString().equals(match.toString()))
+                return m;
+        }
+        return null;
     }
 
     @Override

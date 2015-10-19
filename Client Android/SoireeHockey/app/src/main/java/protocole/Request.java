@@ -17,12 +17,17 @@ import org.apache.commons.lang3.SerializationUtils;
 
 public class Request extends Message {
 
-    String adress;
-    int port;
+    private String address ;
+    private int port ;
+
+    public Request(){
+        super();
+        address = null;
+        port = 0;
+    }
 
     public static Request unmarshall(byte[] request) {
         // TODO Auto-generated method stub
-
         return SerializationUtils.deserialize(request);
     }
     @SuppressWarnings("empty-statement")
@@ -31,26 +36,23 @@ public class Request extends Message {
         return SerializationUtils.serialize((Serializable) requete);
     }
 
-    public int getAddress() {
+    public String getAddress() {
         // TODO Auto-generated method stub
-        return 0;
+        return address ;
     }
 
-    public SocketAddress getPort() {
+    public int getPort() {
         // TODO Auto-generated method stub
-        return null;
+        return port;
     }
 
-    public String getAdress() {
-        return adress;
-    }
-
-    public void setAdress(String adresse) {
-        this.adress = adresse;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setPort(int port) {
         this.port = port;
     }
+
 }
 

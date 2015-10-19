@@ -19,14 +19,15 @@ public class SendFeedBackJob extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         Request requete = new Request();
-        requete.setAdress("192.168.0.60");
+        requete.setAddress("96.21.161.134");
         requete.setPort(11111);
         requete.setMethode(Methodes.demandeListMatch);
+        requete.setMessage("Coucou Quentin. Vois tu mon message ?");
         byte[] buff = Request.marshall(requete);
 
 
         try {
-            DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("192.168.0.52"), 11111);
+            DatagramPacket out = new DatagramPacket(buff, buff.length, InetAddress.getByName("70.81.239.83"), 11111);
 
             DatagramSocket asocket = new DatagramSocket();
 

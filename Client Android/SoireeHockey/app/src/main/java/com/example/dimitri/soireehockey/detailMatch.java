@@ -5,11 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.ParseException;
 
-import Match.*;
+import Match.Match;
 
 public class detailMatch extends AppCompatActivity {
 
@@ -19,6 +21,8 @@ public class detailMatch extends AppCompatActivity {
     private TextView textVisiteurPoint;
     private TextView textNumPeriode;
     private TextView textTempsRestant;
+    private Button parier;
+    private Match match;
 
 
     @Override
@@ -32,52 +36,30 @@ public class detailMatch extends AppCompatActivity {
         textVisiteurPoint = (TextView) findViewById(R.id.exterieurPoint);
         textNumPeriode = (TextView) findViewById(R.id.numperiode);
         textTempsRestant = (TextView) findViewById(R.id.tempspasse);
-
-        Intent i = getIntent();
-
+        parier = (Button) findViewById(R.id.parier);
 
 
-        Match match = (Match) i.getSerializableExtra("match");
-        long tempspasse = 0;
-        int minutespasse = 0;
-        int secondespasse = 0;
-        int periode = 0;
+        final Intent i = getIntent();
+        match = (Match)i.getSerializableExtra("match");
 
         textLocal.setText(match.getEquipeDomicile().getNom());
         textVisiteur.setText(match.getEquipeExterieur().getNom());
         textVisiteurPoint.setText(String.valueOf(match.getNbButsDomicile()));
         textLocalPoint.setText(String.valueOf(match.getNbButsExterieur()));
-        try {
-            tempspasse = match.getTemps();
 
-            minutespasse = (int) tempspasse/60;
-            if(minutespasse < 20)
-            {
-                periode = 1;
-                tempspasse = tempspasse%60;
-                secondespasse = (int)tempspasse;
-            }
-            else if(minutespasse > 20)
-            {
-                periode = 2;
-                minutespasse = minutespasse - 20;
-                tempspasse = tempspasse%60;
-                secondespasse = (int)tempspasse;
-            }
-            else if(minutespasse > 40)
-            {
-                periode = 3;
-                minutespasse -= 40;
-                tempspasse = tempspasse%60;
-                secondespasse = (int)tempspasse;
-            }
+        String periodetemps = recupererTemps();
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        textNumPeriode.setText(String.valueOf(periodetemps.split(" ")[0]));
+        textTempsRestant.setText(periodetemps.split(" ")[1]);
 
-        textNumPeriode.setText(String.valueOf(periode));
-        textTempsRestant.setText(String.valueOf(minutespasse)+":"+String.valueOf(secondespasse));
+        parier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent parier = new Intent(detailMatch.this, Parier.class);
+                parier.putExtra("match", match);
+                startActivity(parier);
+            }
+        });
 
     }
 
@@ -102,4 +84,53 @@ public class detailMatch extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void sync()
+    {
+        textLocal.setText(match.getEquipeDomicile().getNom());
+        textVisiteur.setText(match.getEquipeExterieur().getNom());
+        textVisiteurPoint.setText(String.valueOf(match.getNbButsDomicile()));
+        textLocalPoint.setText(String.valueOf(match.getNbButsExterieur()));
+
+        String periodetemps = recupererTemps();
+
+        textNumPeriode.setText(String.valueOf(periodetemps.split(" ")[0]));
+        textTempsRestant.setText(periodetemps.split(" ")[1]);
+    }
+
+    public String recupererTemps()
+    {
+        long tempspasse = 0;
+        int minutespasse = 0;
+        int secondespasse = 0;
+        int periode = 0;
+        tempspasse = match.getTemps();
+
+        minutespasse = (int) tempspasse/60;
+        if(minutespasse < 20)
+        {
+            periode = 1;
+            tempspasse = tempspasse%60;
+            secondespasse = (int)tempspasse;
+        }
+        else if(minutespasse > 20)
+        {
+            periode = 2;
+            minutespasse = minutespasse - 20;
+            tempspasse = tempspasse%60;
+            secondespasse = (int)tempspasse;
+        }
+        else if(minutespasse > 40)
+        {
+            periode = 3;
+            minutespasse -= 40;
+            tempspasse = tempspasse%60;
+            secondespasse = (int)tempspasse;
+        }
+
+        String temps = minutespasse + ":" + secondespasse;
+        return periode + " " + temps;
+    }
+
+
 }

@@ -3,6 +3,7 @@
     package="com.example.dimitri.soireehockey" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,6 +21,10 @@
         <activity
             android:name=".detailMatch"
             android:label="@string/title_activity_detail_match" >
+        </activity>
+        <activity
+            android:name=".Parier"
+            android:label="@string/title_activity_paris" >
         </activity>
     </application>
 
