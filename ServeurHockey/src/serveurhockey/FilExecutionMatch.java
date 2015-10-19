@@ -55,11 +55,11 @@ public class FilExecutionMatch implements Runnable{
 
                 while (true) {
                         DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);
-                        System.out.println("Waiting for request...");
+                        System.out.println("Waiting for match info request...");
                         myMatchInfoSocket.receive(dgp); // réception bloquante
 
-                        System.out.println("Request receive !!");
                         Request Requete = Request.unmarshall(dgp.getData());
+                        System.out.println("Request receive from "+ Requete.getAddress() +" for method : "+ Requete.getMethode().toString());
                      
                         //Thread-per-request. C'est à dire que pour chaque nouvelle requête, on place la requête dans le pool de thread
                        execute.submit(new RequestHandler(Requete, serverIP, serverPort, matchList));

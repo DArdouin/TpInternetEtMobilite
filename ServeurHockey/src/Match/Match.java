@@ -81,9 +81,9 @@ public class Match implements Serializable, Runnable{
             
             long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
             
-            System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
-            System.out.println("Diff : " + diff);
-            System.out.println("Secondes : " + diff / 1000);
+            //System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
+            //System.out.println("Diff : " + diff);
+            //System.out.println("Secondes : " + diff / 1000);
             
             if(diff < 0 ){
                 return -1 ;
@@ -166,28 +166,40 @@ public class Match implements Serializable, Runnable{
      */
     @Override
     public void run() {
-        //On attend le début du match
-        while(getTemps()<0);
-        
-        //Tant que notre seconde mi-temps n'est pas terminée
-        while(getTemps()<=40){
-            //On récupère le paris dans la liste de requête
-            Request nouvelleRequete = listeDeRequete.getFirst();
-            if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeDomicile().getNom())) //On cherche sur quelle équipe parier
-                monCompute(parisEquipeDomicile, nouvelleRequete);//On ajoute la requête contenante le paris à la liste
-            else if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeExterieur().getNom())) //On cherche sur quelle équipe parier
-                monCompute(parisEquipeExterieur, nouvelleRequete);
-            avertirParisOk(nouvelleRequete);
-        }
-        
-        //On attend la fin du match
-        while(getTemps()!=0);
-        
-        //Le match est terminé, on envois la somme à tout les gagnants
-        if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne
-            avertirParieursGagnants(parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
-        }else{
-            avertirParieursGagnants(parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+        try {
+            //Tant que notre seconde mi-temps n'est pas terminée
+            while(getTemps()<=3000){
+                if(!listeDeRequete.isEmpty()){
+                    //On récupère le paris dans la liste de requête
+                    Request nouvelleRequete = listeDeRequete.removeFirst();
+                    System.out.println("Paris pour l'équipe " + nouvelleRequete.getParis().getNomDeLequipe() + " d'une somme de " + nouvelleRequete.getParis().getSomme() + "€");
+                    if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeDomicile().getNom())) //On cherche sur quelle équipe parier
+                        monCompute(parisEquipeDomicile, nouvelleRequete);//On ajoute la requête contenante le paris à la liste
+                    else if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeExterieur().getNom())) //On cherche sur quelle équipe parier
+                        monCompute(parisEquipeExterieur, nouvelleRequete);
+                    avertirParisOk(nouvelleRequete, nouvelleRequete.getAddress(), nouvelleRequete.getPort());
+                } 
+                else {
+                    Thread.sleep(2000);
+                }
+            }
+            
+            //On attend la fin du match
+            while(getTemps()!=0)
+                Thread.sleep(30000);
+            
+            //Le match est terminé, on envois la somme à tout les gagnants
+            if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne
+                avertirParieursGagnants(parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
+            }
+            else if(nbButsDomicile.equals(nbButsExterieur)) {
+                System.out.println("Egalité !");
+            }
+            else{
+                avertirParieursGagnants(parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -233,11 +245,17 @@ public class Match implements Serializable, Runnable{
         }
     }
     
-    private void avertirParisOk(Request nouvelleRequete){
-        //On envois le message au client
-        Request r = new Request();
-        r.setMethode(Methodes.confirmerParis); //Permet de confirmer une requête
-        r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
+    private void avertirParisOk(Request nouvelleRequete,String address, int port){
+        try {
+            //On envois le message au client
+            Request r = new Request();
+            r.setMethode(Methodes.confirmerParis); //Permet de confirmer une requête
+            r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
+
+            transmettre(r, address , port);
+        } catch (IOException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void transmettre(Request messageToSend, String address, int port) throws UnknownHostException, IOException{
@@ -250,7 +268,7 @@ public class Match implements Serializable, Runnable{
             DatagramPacket out = new DatagramPacket(buf, buf.length, InetAddress.getByName(address), port);
 
             aSocket.send(out);
-            System.out.println("Requête envoyée");
+            System.out.println("Response send to "+ address + "for method : " + messageToSend.getMethode());
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {

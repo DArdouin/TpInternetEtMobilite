@@ -44,7 +44,7 @@ public class RequestHandler implements Runnable{
             DatagramPacket out = new DatagramPacket(buf, buf.length, InetAddress.getByName(address), port);
 
             aSocket.send(out);
-            System.out.println("Requête envoyée");
+            System.out.println("Response send to "+ address + " with method : " +  messageToSend.getMethode());
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
