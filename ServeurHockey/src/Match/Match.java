@@ -40,7 +40,7 @@ public class Match implements Serializable, Runnable{
     private Integer nbPenaliteExterieur ;
     private Integer nbButsDomicile ;
     private Integer nbButsExterieur ;
-    private String dateDebut  ;    
+    private Date dateDebut  ;    
     private LinkedList<Request> listeDeRequete;
     private HashMap<String,Request> parisEquipeExterieur;
     private HashMap<String,Request> parisEquipeDomicile;   
@@ -51,7 +51,7 @@ public class Match implements Serializable, Runnable{
      * @param e2 La seconde équipe
      * @param date
      */
-    public Match(Equipe e1, Equipe e2, String date){
+    public Match(Equipe e1, Equipe e2, Date date){
         equipeDomicile = e1;
         equipeExterieur = e2;
         nbButsDomicile = 0 ;
@@ -74,29 +74,23 @@ public class Match implements Serializable, Runnable{
     }
 
     public long getTemps(){
-        try {
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Date actualDate = new Date();
-            Date scheduledDate = format.parse(dateDebut);
-            
-            long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
-            
-            //System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
-            //System.out.println("Diff : " + diff);
-            //System.out.println("Secondes : " + diff / 1000);
-            
-            if(diff < 0 ){
-                return -1 ;
-            }
-            else if(diff >= (60*60)){
-                return 0 ;
-            }
-            else {
-                return diff ;
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
+        Date actualDate = new Date();
+        Date scheduledDate = dateDebut;
+
+        long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
+
+        //System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
+        //System.out.println("Diff : " + diff);
+        //System.out.println("Secondes : " + diff / 1000);
+
+        if(diff < 0 ){
+            return -1 ;
+        }
+        else if(diff >= (60*60)){
+            return 0 ;
+        }
+        else {
+            return diff ;
         }
     }
 
@@ -140,11 +134,11 @@ public class Match implements Serializable, Runnable{
         this.nbButsExterieur = nbButsExterieur;
     }
 
-    public String getDateDebut() {
+    public Date getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(String dateDebut) {
+    public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
     
@@ -210,6 +204,7 @@ public class Match implements Serializable, Runnable{
             }
             else{
                 avertirParieursGagnants(parisEquipeExterieur,parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
+                avertirParieursPerdants(parisEquipeDomicile);
                 System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeExterieur.getNom());
             }
         } catch (InterruptedException ex) {

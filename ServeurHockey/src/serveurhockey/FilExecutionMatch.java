@@ -51,7 +51,7 @@ public class FilExecutionMatch implements Runnable{
                 myMatchInfoSocket = new DatagramSocket(serverPort); // port pour les informations
                 System.out.println("Le fil d'actualisation des matchs est lancé, sur l'IP " + serverIP + " sur le port " + serverPort);
 
-                byte[] buffer = new byte[1000];
+                byte[] buffer = new byte[10000];
 
                 while (true) {
                         DatagramPacket dgp = new DatagramPacket(buffer,buffer.length);

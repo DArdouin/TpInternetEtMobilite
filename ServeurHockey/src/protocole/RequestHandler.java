@@ -6,6 +6,7 @@
 package protocole;
 
 import Match.ListeDesMatchs;
+import Match.Match;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -69,8 +70,17 @@ public class RequestHandler implements Runnable{
                     transmettre(r, this.request.getAddress(),this.request.getPort());
                     break ;
                 case updateMatchInfo : 
-                    Request r2 = new Request() ;
-                    r2.setMatch(this.request.getMatch());
+                    Request r2 = new Request() ;                  
+                    //On récupère les infos du match
+                    for(Match m : matchList.getMatchs()){ //On parcours la liste de match 
+                        if(request.getMatch().getEquipeDomicile().getNom().equals(m.getEquipeDomicile().getNom())){ //Si on a la même équipe domicile
+                            if(request.getMatch().getEquipeExterieur().getNom().equals(m.getEquipeExterieur().getNom())){ //Si on a la même équipe extérieur 
+                                r2.setMatch(m);
+                            }
+                        }
+                    }
+                    //On envois ça
+                    
                     r2.setNumeroRequete(this.request.getNumeroRequete());
                     r2.setMethode(Methodes.infosMatchs);
                     transmettre(r2, this.request.getAddress(),this.request.getPort());
