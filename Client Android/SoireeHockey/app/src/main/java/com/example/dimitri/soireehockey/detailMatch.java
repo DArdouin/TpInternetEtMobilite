@@ -40,6 +40,8 @@ public class detailMatch extends AppCompatActivity {
     private Match match;
     private Button sync;
     private ActualisationMatchTask task;
+    private TimerTask taskTimer;
+    private Timer timer;
 
 
     @Override
@@ -76,14 +78,14 @@ public class detailMatch extends AppCompatActivity {
 
 
         // Lancement du Timer
-        TimerTask task = new TimerTask() {
+        taskTimer = new TimerTask() {
             @Override
             public void run() {
                 sync();
             }
         };
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(task,2000,45000);
+        timer = new Timer();
+        timer.scheduleAtFixedRate(taskTimer, 2000, 45000);
 
         parier.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +125,18 @@ public class detailMatch extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timer.scheduleAtFixedRate(taskTimer,2000,45000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 
     public void sync() {
