@@ -1,6 +1,7 @@
 package com.example.dimitri.soireehockey;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 import Match.Match;
 import Paris.Paris;
+import protocole.Request;
 
 public class Parier extends AppCompatActivity {
 
@@ -61,24 +63,27 @@ public class Parier extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String textmontant = montant.getText().toString();
-                paris.setSomme(Integer.parseInt(montant.getText().toString()));
-                if(choixmatch.getCheckedItemPosition() == 0)
-                {
-                    paris.setNomDeLequipe(match.getEquipeDomicile().getNom());
-                }
-                if(choixmatch.getCheckedItemPosition() == 1)
-                {
-                    paris.setNomDeLequipe(match.getEquipeExterieur().getNom());
-                }
 
                 if(choixmatch.getCheckedItemCount() > 0)
                 {
                     if((textmontant != null) && (textmontant.trim().length() > 0))
                     {
-                        task = new EnvoyerParisTask(Parier.this, paris);
-                        task.execute(match);
+                        paris = new Paris();
+                        paris.setSomme(Integer.parseInt(montant.getText().toString()));
+                        if(choixmatch.getCheckedItemPosition() == 0)
+                        {
+                            paris.setNomDeLequipe(match.getEquipeDomicile().getNom());
+                        }
+                        if(choixmatch.getCheckedItemPosition() == 1)
+                        {
+                            paris.setNomDeLequipe(match.getEquipeExterieur().getNom());
+                        }
+
+                        task = new EnvoyerParisTask(Parier.this, paris,match);
+                        AsyncTask<Match, Void, Boolean> retour = task.execute();
                         try {
-                            boolean result = task.get();
+
+                            Boolean result = retour.get();
                             if(result == true)
                                 Toast.makeText(Parier.this, "Votre paris a été envoyé",Toast.LENGTH_LONG).show();
                             if(result == false)

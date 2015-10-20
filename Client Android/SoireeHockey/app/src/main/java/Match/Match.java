@@ -1,7 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Match;
-
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,12 +20,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import protocole.Methodes;
 import protocole.Request;
 
 /**
- * Created by Dimitri on 16/10/2015.
+ *
+ * @author Damien
  */
 public class Match implements Serializable, Runnable{
     /**
@@ -79,6 +81,9 @@ public class Match implements Serializable, Runnable{
 
             long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
 
+            //System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
+            //System.out.println("Diff : " + diff);
+            //System.out.println("Secondes : " + diff / 1000);
 
             if(diff < 0 ){
                 return -1 ;
@@ -161,28 +166,54 @@ public class Match implements Serializable, Runnable{
      */
     @Override
     public void run() {
-        //On attend le début du match
-        while(getTemps()<0);
+        try {
+            //Tant que notre seconde mi-temps n'est pas terminée
+            while(getTemps()<=30){
+                if(!listeDeRequete.isEmpty()){
+                    //On récupère le paris dans la liste de requête
+                    Request nouvelleRequete = listeDeRequete.removeFirst();
+                    System.out.println("Paris pour l'équipe " + nouvelleRequete.getParis().getNomDeLequipe() + " d'une somme de " + nouvelleRequete.getParis().getSomme() + "€");
+                    if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeDomicile().getNom())) //On cherche sur quelle équipe parier
+                        monCompute(parisEquipeDomicile, nouvelleRequete);//On ajoute la requête contenante le paris à la liste
+                    else if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeExterieur().getNom())) //On cherche sur quelle équipe parier
+                        monCompute(parisEquipeExterieur, nouvelleRequete);
+                    avertirParisOk(nouvelleRequete, nouvelleRequete.getAddress(), nouvelleRequete.getPort());
+                }
+                else {
 
-        //Tant que notre seconde mi-temps n'est pas terminée
-        while(getTemps()<=40){
-            //On récupère le paris dans la liste de requête
-            Request nouvelleRequete = listeDeRequete.getFirst();
-            if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeDomicile().getNom())) //On cherche sur quelle équipe parier
-                monCompute(parisEquipeDomicile, nouvelleRequete);//On ajoute la requête contenante le paris à la liste
-            else if(nouvelleRequete.getParis().getNomDeLequipe().equals(getEquipeExterieur().getNom())) //On cherche sur quelle équipe parier
-                monCompute(parisEquipeExterieur, nouvelleRequete);
-            avertirParisOk(nouvelleRequete);
-        }
+                    Thread.sleep(1000);
+                }
+            }
 
-        //On attend la fin du match
-        while(getTemps()!=0);
+            //On attend la fin du match
+            while(getTemps() < 45){
+                if(!listeDeRequete.isEmpty()){
+                    //On récupère le paris dans la liste de requête
+                    Request nouvelleRequete = listeDeRequete.removeFirst();
+                    avertirParisPasOk(nouvelleRequete, nouvelleRequete.getAddress(), nouvelleRequete.getPort()); //Paris refusé car on est en 3ème partie de match
+                }
+                else {
+                    Thread.sleep(1000);
+                }
+            }
 
-        //Le match est terminé, on envois la somme à tout les gagnants
-        if(nbButsDomicile.compareTo(nbButsExterieur) >= 0){ //Si l'équipe domicile gagne
-            avertirParieursGagnants(parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
-        }else{
-            avertirParieursGagnants(parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+            //Le match est terminé, on envois la somme à tout les gagnants
+            if(nbButsDomicile.compareTo(nbButsExterieur) > 0){ //Si l'équipe domicile gagne
+                avertirParieursGagnants(parisEquipeDomicile,parisEquipeExterieur);//On avertis toutes les personnes de leur victoire
+                avertirParieursPerdants(parisEquipeExterieur);
+                System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeDomicile.getNom());
+            }
+            else if(nbButsDomicile.equals(nbButsExterieur)) {
+                System.out.println("Resultat du match : " + toString() + " --> Egalité !");
+                avertirParieursPerdants(parisEquipeExterieur);
+                avertirParieursPerdants(parisEquipeDomicile);
+            }
+            else{
+                avertirParieursGagnants(parisEquipeExterieur,parisEquipeDomicile);//On avertis toutes les personnes de leur victoire
+                System.out.println("Resultat du match : " + toString() + " --> Victoire de " + equipeExterieur.getNom());
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -203,19 +234,38 @@ public class Match implements Serializable, Runnable{
         }
     }
 
-    private void avertirParieursGagnants(HashMap<String,Request> map){
+    private void avertirParieursGagnants(HashMap<String,Request> mapGagnants, HashMap<String,Request> mapPerdants){
         int montantTotal = 0;
         double prorata = 0.0;
         int gain = 0;
         //On calcul le montant total parié
-        for(Request r : map.values()){
+        for(Request r : mapGagnants.values()){
+            montantTotal += r.getParis().getSomme();
+        }
+        for(Request r : mapPerdants.values()){
             montantTotal += r.getParis().getSomme();
         }
         //On parcours notre table de parieurs
-        for(String currentKey : map.keySet()){
+        for(String currentKey : mapGagnants.keySet()){
             //On calcul la somme gagnée
-            prorata = (map.get(currentKey).getParis().getSomme()/ montantTotal) * 100;
+            prorata = (mapGagnants.get(currentKey).getParis().getSomme()/ montantTotal) * 100;
             gain = (int) (0.75 * montantTotal * prorata);
+            //On envoie le message au client
+            Request r = new Request(); //On crée un nouveau message, contenant les gains
+            r.setMethode(Methodes.annoncerGains);
+            r.setGain(gain);
+            try {
+                transmettre(r, mapGagnants.get(currentKey).getAddress(), mapGagnants.get(currentKey).getPort());
+            } catch (IOException ex) {
+                Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void avertirParieursPerdants(HashMap<String,Request> map){
+        int gain = -1; //Car on a perdu
+        //On parcours notre table de parieurs
+        for(String currentKey : map.keySet()){
             //On envoie le message au client
             Request r = new Request(); //On crée un nouveau message, contenant les gains
             r.setMethode(Methodes.annoncerGains);
@@ -228,11 +278,28 @@ public class Match implements Serializable, Runnable{
         }
     }
 
-    private void avertirParisOk(Request nouvelleRequete){
-        //On envois le message au client
-        Request r = new Request();
-        r.setMethode(Methodes.confirmerParis); //Permet de confirmer une requête
-        r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
+    private void avertirParisOk(Request nouvelleRequete,String address, int port){
+        try {
+            //On envois le message au client
+            Request r = new Request();
+            r.setMethode(Methodes.confirmerParis); //Permet de confirmer une requête
+            r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
+            transmettre(r, address , port);
+        } catch (IOException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void avertirParisPasOk(Request nouvelleRequete, String address, int port){
+        try {
+            //On envois le message au client
+            Request r = new Request();
+            r.setMethode(Methodes.refuserParis); //Permet de confirmer une requête
+            r.setNumeroRequete(nouvelleRequete.getNumeroRequete()); //Même numéro de requête
+            transmettre(r, address , port);
+        } catch (IOException ex) {
+            Logger.getLogger(Match.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void transmettre(Request messageToSend, String address, int port) throws UnknownHostException, IOException{
@@ -245,7 +312,7 @@ public class Match implements Serializable, Runnable{
             DatagramPacket out = new DatagramPacket(buf, buf.length, InetAddress.getByName(address), port);
 
             aSocket.send(out);
-            System.out.println("Requête envoyée");
+            System.out.println("Response send to "+ address + "for method : " + messageToSend.getMethode());
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -256,6 +323,4 @@ public class Match implements Serializable, Runnable{
                 aSocket.close();
         }
     }
-
-
 }

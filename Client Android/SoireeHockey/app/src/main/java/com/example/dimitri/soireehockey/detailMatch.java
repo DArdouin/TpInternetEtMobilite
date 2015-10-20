@@ -57,8 +57,8 @@ public class detailMatch extends AppCompatActivity {
 
         textLocal.setText(match.getEquipeDomicile().getNom());
         textVisiteur.setText(match.getEquipeExterieur().getNom());
-        textVisiteurPoint.setText(String.valueOf(match.getNbButsDomicile()));
-        textLocalPoint.setText(String.valueOf(match.getNbButsExterieur()));
+        textVisiteurPoint.setText(String.valueOf(match.getNbButsExterieur()));
+        textLocalPoint.setText(String.valueOf(match.getNbButsDomicile()));
 
         String periodetemps = recupererTemps();
 
@@ -106,23 +106,21 @@ public class detailMatch extends AppCompatActivity {
     }
 
     public void sync() {
-        task = new ActualisationMatchTask(detailMatch.this);
-        task.execute(match);
+        task = new ActualisationMatchTask(detailMatch.this,match);
+        AsyncTask<Match, Void, Match> retour = task.execute();
 
         try {
-            match = task.get();
+            match = retour.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-
-
         textLocal.setText(match.getEquipeDomicile().getNom());
         textVisiteur.setText(match.getEquipeExterieur().getNom());
-        textVisiteurPoint.setText(String.valueOf(match.getNbButsDomicile()));
-        textLocalPoint.setText(String.valueOf(match.getNbButsExterieur()));
+        textVisiteurPoint.setText(String.valueOf(match.getNbButsExterieur()));
+        textLocalPoint.setText(String.valueOf(match.getNbButsDomicile()));
 
         String periodetemps = recupererTemps();
 

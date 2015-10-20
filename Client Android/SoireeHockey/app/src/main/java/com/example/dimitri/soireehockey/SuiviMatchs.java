@@ -52,22 +52,22 @@ public class SuiviMatchs extends AppCompatActivity {
         task = new SendFeedBackJob(SuiviMatchs.this);
         AsyncTask<Void, Void, Request> retour = task.execute();
 
-//        try {
-//            listeDesMatchs = retour.get().getMatchList();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            listeDesMatchs = retour.get().getMatchList();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+          e.printStackTrace();
+        }
 
 
 
         List<HashMap<String,String>> liste = new ArrayList<HashMap<String,String>>();
-        try {
+        /*try {
             listeDesMatchs = new ListeDesMatchs();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
         for(int i = 0; i < listeDesMatchs.getMatchs().size(); i++)
         {

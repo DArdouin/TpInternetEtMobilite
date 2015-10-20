@@ -22,23 +22,25 @@ public class EnvoyerParisTask extends AsyncTask<Match,Void,Boolean> {
 
     private WeakReference<Parier> mActivity = null;
     private Paris paris;
+    private Match match ;
 
 
-    public EnvoyerParisTask(Parier parier,Paris paris)
+    public EnvoyerParisTask(Parier parier, Paris paris, Match match)
     {
         mActivity = new WeakReference<Parier>(parier);
         this.paris = paris;
+        this.match = match ;
 
     }
 
     @Override
     protected Boolean doInBackground(Match... params) {
         Request requete = new Request();
-        requete.setAddress("192.168.0.2");
+        requete.setAddress("192.168.0.37");
         requete.setPort(22222);
         requete.setMethode(Methodes.parier);
         requete.setParis(paris);
-        requete.setMatch(params[0]);
+        requete.setMatch(match);
 
 
         byte[] buffout = Request.marshall(requete);
@@ -46,10 +48,10 @@ public class EnvoyerParisTask extends AsyncTask<Match,Void,Boolean> {
 
 
         try {
-            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("192.168.0.2"), 22222);
+            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("192.168.0.52"), 22222);
             DatagramSocket outsocket = new DatagramSocket();
 
-            System.out.println("Envoi de la requête...");
+            System.out.println("Envoi de la requête pari...");
             outsocket.send(out);
             if (outsocket != null)
                 outsocket.close();
@@ -60,7 +62,7 @@ public class EnvoyerParisTask extends AsyncTask<Match,Void,Boolean> {
 
             //insocket.setSoTimeout(5000);
 
-            System.out.println("En attente de réponse..");
+            System.out.println("En attente de réponse pari..");
             insocket.receive(in);
             Request response = Request.unmarshall(in.getData());
             System.out.println("Réponse reçue !");
@@ -69,9 +71,9 @@ public class EnvoyerParisTask extends AsyncTask<Match,Void,Boolean> {
 
 
             Methodes confirmation = response.getMethode();
-            if(confirmation.compareTo(Methodes.confirmerParis) == 1)
+            if(confirmation.compareTo(Methodes.confirmerParis) == 0)
                 return true;
-            if(confirmation.compareTo(Methodes.refuserParis) == 1)
+            if(confirmation.compareTo(Methodes.refuserParis) == 0)
                 return false;
 
 
@@ -83,6 +85,6 @@ public class EnvoyerParisTask extends AsyncTask<Match,Void,Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 }

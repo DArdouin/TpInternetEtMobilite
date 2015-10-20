@@ -13,16 +13,6 @@ public class ListeDesMatchs implements Serializable{
 
     public ListeDesMatchs() throws ParseException{
         matchs = new ArrayList<>();
-        Match match1 = new Match(new Equipe("Sherbrooke"),new Equipe("Montréal"), "2015/10/16 16:55:00");
-        Match match2 = new Match(new Equipe("Sherbrooke"),new Equipe("Ottawa"), "2015/10/16 20:00:00");
-        Match match3 = new Match(new Equipe("Sherbrooke"),new Equipe("Québec"), "2015/10/16 20:00:00");
-        Match match4 = new Match(new Equipe("Sherbrooke"),new Equipe("Vancouver"), "2015/10/16 20:00:00");
-        matchs.add(match1);
-        matchs.add(match2);
-        matchs.add(match3);
-        matchs.add(match4);
-
-        match1.getTemps() ;
     }
 
     public List<Match> getMatchs() {

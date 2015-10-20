@@ -12,6 +12,8 @@ import java.net.UnknownHostException;
 
 import protocole.Methodes;
 import protocole.Request;
+import utils.Utils;
+
 
 /**
  * Created by Quentin on 18/10/15.
@@ -28,19 +30,18 @@ public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
 
     @Override
     protected Request doInBackground(Void... params) {
-        Request requete = new Request();
-        requete.setAddress("192.168.0.2");
-        requete.setPort(11111);
-        requete.setMethode(Methodes.demandeListMatch);
-        byte[] buffout = Request.marshall(requete);
-        byte[] buffin = new byte[3000];
-
-
         try {
-            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("192.168.0.2"), 11111);
+            Request requete = new Request();
+            requete.setAddress("192.168.0.37");
+            requete.setPort(11111);
+            requete.setMethode(Methodes.demandeListMatch);
+            byte[] buffout = Request.marshall(requete);
+            byte[] buffin = new byte[10000];
+
+            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("192.168.0.52"), 11111);
             DatagramSocket outsocket = new DatagramSocket();
 
-            System.out.println("Envoi de la requête...");
+            System.out.println("Envoi de la requête demande list match...");
             outsocket.send(out);
             if(outsocket != null)
                 outsocket.close();
@@ -51,7 +52,7 @@ public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
 
             //insocket.setSoTimeout(5000);
 
-            System.out.println("En attente de réponse..");
+            System.out.println("En attente de réponse demande liste match..");
             insocket.receive(in);
             Request response = Request.unmarshall(in.getData()) ;
             System.out.println("Réponse reçue !");

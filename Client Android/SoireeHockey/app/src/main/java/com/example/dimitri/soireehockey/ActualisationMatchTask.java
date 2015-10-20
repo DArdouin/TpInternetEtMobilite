@@ -19,33 +19,33 @@ import protocole.Request;
  */
 public class ActualisationMatchTask extends AsyncTask<Match, Void, Match> {
 
+    private Match match ;
+
     private WeakReference<detailMatch> mActivity = null;
 
-
-    public ActualisationMatchTask(detailMatch detailMatch)
+    public ActualisationMatchTask(detailMatch detailMatch, Match m)
     {
         mActivity = new WeakReference<detailMatch>(detailMatch);
-
+        match = m ;
     }
 
     @Override
     protected Match doInBackground(Match... params) {
         Request requete = new Request();
-        requete.setAddress("192.168.0.2");
+        requete.setAddress("192.168.0.37");
         requete.setPort(11111);
         requete.setMethode(Methodes.updateMatchInfo);
-        requete.setMatch(params[0]);
-
+        requete.setMatch(match);
 
         byte[] buffout = Request.marshall(requete);
-        byte[] buffin = new byte[3000];
+        byte[] buffin = new byte[10000];
 
 
         try {
-            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("192.168.0.2"), 11111);
+            DatagramPacket out = new DatagramPacket(buffout, buffout.length, InetAddress.getByName("192.168.0.52"), 11111);
             DatagramSocket outsocket = new DatagramSocket();
 
-            System.out.println("Envoi de la requête...");
+            System.out.println("Envoi de la requête demande match info...");
             outsocket.send(out);
             if (outsocket != null)
                 outsocket.close();
@@ -56,7 +56,7 @@ public class ActualisationMatchTask extends AsyncTask<Match, Void, Match> {
 
             //insocket.setSoTimeout(5000);
 
-            System.out.println("En attente de réponse..");
+            System.out.println("En attente de réponse demande match info..");
             insocket.receive(in);
             Request response = Request.unmarshall(in.getData());
             System.out.println("Réponse reçue !");
