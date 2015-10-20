@@ -10,28 +10,33 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import Match.Match;
 import protocole.Methodes;
 import protocole.Request;
 
 /**
- * Created by Quentin on 18/10/15.
+ * Created by Dimitri on 19/10/2015.
  */
-public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
+public class ActualisationMatchTask extends AsyncTask<Match, Void, Match> {
 
-    private WeakReference<SuiviMatchs> mActivity = null;
+    private WeakReference<detailMatch> mActivity = null;
 
-    public SendFeedBackJob(SuiviMatchs suiviMatch)
+
+    public ActualisationMatchTask(detailMatch detailMatch)
     {
-        link(suiviMatch);
+        mActivity = new WeakReference<detailMatch>(detailMatch);
+
     }
 
-
     @Override
-    protected Request doInBackground(Void... params) {
+    protected Match doInBackground(Match... params) {
         Request requete = new Request();
         requete.setAddress("192.168.0.2");
         requete.setPort(11111);
-        requete.setMethode(Methodes.demandeListMatch);
+        requete.setMethode(Methodes.updateMatchInfo);
+        requete.setMatch(params[0]);
+
+
         byte[] buffout = Request.marshall(requete);
         byte[] buffin = new byte[3000];
 
@@ -42,7 +47,7 @@ public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
 
             System.out.println("Envoi de la requête...");
             outsocket.send(out);
-            if(outsocket != null)
+            if (outsocket != null)
                 outsocket.close();
 
 
@@ -53,12 +58,12 @@ public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
 
             System.out.println("En attente de réponse..");
             insocket.receive(in);
-            Request response = Request.unmarshall(in.getData()) ;
+            Request response = Request.unmarshall(in.getData());
             System.out.println("Réponse reçue !");
-            if(insocket != null)
+            if (insocket != null)
                 insocket.close();
 
-            return response ;
+            return response.getMatch();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -67,11 +72,8 @@ public class SendFeedBackJob extends AsyncTask<Void,Void,Request> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null ;
+        return null;
     }
 
-    public void link (SuiviMatchs pActivity) {
-        mActivity = new WeakReference<SuiviMatchs>(pActivity);
-    }
 
 }

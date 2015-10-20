@@ -15,8 +15,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import Match.Match;
+import Paris.Paris;
 
 public class Parier extends AppCompatActivity {
 
@@ -24,6 +26,10 @@ public class Parier extends AppCompatActivity {
     private ListView choixmatch;
     private EditText montant;
     private Button envoyer;
+    private EnvoyerParisTask task;
+    private Paris paris;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +61,34 @@ public class Parier extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String textmontant = montant.getText().toString();
+                paris.setSomme(Integer.parseInt(montant.getText().toString()));
+                if(choixmatch.getCheckedItemPosition() == 0)
+                {
+                    paris.setNomDeLequipe(match.getEquipeDomicile().getNom());
+                }
+                if(choixmatch.getCheckedItemPosition() == 1)
+                {
+                    paris.setNomDeLequipe(match.getEquipeExterieur().getNom());
+                }
+
                 if(choixmatch.getCheckedItemCount() > 0)
                 {
                     if((textmontant != null) && (textmontant.trim().length() > 0))
                     {
+                        task = new EnvoyerParisTask(Parier.this, paris);
+                        task.execute(match);
+                        try {
+                            boolean result = task.get();
+                            if(result == true)
+                                Toast.makeText(Parier.this, "Votre paris a été envoyé",Toast.LENGTH_LONG).show();
+                            if(result == false)
+                                Toast.makeText(Parier.this, "Votre paris n'a pas été envoyé",Toast.LENGTH_LONG).show();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
 
-                        Toast.makeText(Parier.this, "Votre paris a été envoyé",Toast.LENGTH_LONG).show();
                     }
                     else
                         Toast.makeText(Parier.this, "Veuillez entrez le montant de votre pari", Toast.LENGTH_SHORT).show();

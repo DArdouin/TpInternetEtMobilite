@@ -1,6 +1,7 @@
 package com.example.dimitri.soireehockey;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,9 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 
 import Match.Match;
+import protocole.Methodes;
+import protocole.Request;
 
 public class detailMatch extends AppCompatActivity {
 
@@ -23,6 +33,8 @@ public class detailMatch extends AppCompatActivity {
     private TextView textTempsRestant;
     private Button parier;
     private Match match;
+    private Button sync;
+    private ActualisationMatchTask task;
 
 
     @Override
@@ -37,6 +49,7 @@ public class detailMatch extends AppCompatActivity {
         textNumPeriode = (TextView) findViewById(R.id.numperiode);
         textTempsRestant = (TextView) findViewById(R.id.tempspasse);
         parier = (Button) findViewById(R.id.parier);
+        sync = (Button) findViewById(R.id.sync);
 
 
         final Intent i = getIntent();
@@ -58,6 +71,13 @@ public class detailMatch extends AppCompatActivity {
                 Intent parier = new Intent(detailMatch.this, Parier.class);
                 parier.putExtra("match", match);
                 startActivity(parier);
+            }
+        });
+
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sync();
             }
         });
 
@@ -85,8 +105,20 @@ public class detailMatch extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void sync()
-    {
+    public void sync() {
+        task = new ActualisationMatchTask(detailMatch.this);
+        task.execute(match);
+
+        try {
+            match = task.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+
         textLocal.setText(match.getEquipeDomicile().getNom());
         textVisiteur.setText(match.getEquipeExterieur().getNom());
         textVisiteurPoint.setText(String.valueOf(match.getNbButsDomicile()));

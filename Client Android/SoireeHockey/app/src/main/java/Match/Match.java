@@ -79,9 +79,6 @@ public class Match implements Serializable, Runnable{
 
             long diff = (actualDate.getTime() - scheduledDate.getTime())/1000 ;
 
-            System.out.println("Date actuelle : " + actualDate + "\nDate Match : " + scheduledDate);
-            System.out.println("Diff : " + diff);
-            System.out.println("Secondes : " + diff / 1000);
 
             if(diff < 0 ){
                 return -1 ;
