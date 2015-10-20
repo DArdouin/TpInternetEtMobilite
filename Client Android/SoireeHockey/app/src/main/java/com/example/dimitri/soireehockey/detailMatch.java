@@ -31,6 +31,8 @@ public class detailMatch extends AppCompatActivity {
     private TextView textVisiteurPoint;
     private TextView textNumPeriode;
     private TextView textTempsRestant;
+    private TextView textPenaliteDomicile;
+    private TextView textPenaliteExterieur;
     private Button parier;
     private Match match;
     private Button sync;
@@ -48,6 +50,8 @@ public class detailMatch extends AppCompatActivity {
         textVisiteurPoint = (TextView) findViewById(R.id.exterieurPoint);
         textNumPeriode = (TextView) findViewById(R.id.numperiode);
         textTempsRestant = (TextView) findViewById(R.id.tempspasse);
+        textPenaliteDomicile = (TextView) findViewById(R.id.penaliteDomicile);
+        textPenaliteExterieur = (TextView) findViewById(R.id.penaliteExterieur);
         parier = (Button) findViewById(R.id.parier);
         sync = (Button) findViewById(R.id.sync);
 
@@ -59,6 +63,8 @@ public class detailMatch extends AppCompatActivity {
         textVisiteur.setText(match.getEquipeExterieur().getNom());
         textVisiteurPoint.setText(String.valueOf(match.getNbButsExterieur()));
         textLocalPoint.setText(String.valueOf(match.getNbButsDomicile()));
+        textPenaliteDomicile.setText(String.valueOf(match.getNbPenaliteDomicile()));
+        textPenaliteExterieur.setText(String.valueOf(match.getNbPenaliteExterieur()));
 
         String periodetemps = recupererTemps();
 
@@ -121,6 +127,9 @@ public class detailMatch extends AppCompatActivity {
         textVisiteur.setText(match.getEquipeExterieur().getNom());
         textVisiteurPoint.setText(String.valueOf(match.getNbButsExterieur()));
         textLocalPoint.setText(String.valueOf(match.getNbButsDomicile()));
+        textPenaliteDomicile.setText(String.valueOf(match.getNbPenaliteDomicile()));
+        textPenaliteExterieur.setText(String.valueOf(match.getNbPenaliteExterieur()));
+
 
         String periodetemps = recupererTemps();
 
