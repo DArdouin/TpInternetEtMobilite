@@ -1,6 +1,7 @@
 package com.example.dimitri.soireehockey;
 
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import Match.Match;
@@ -70,6 +73,17 @@ public class detailMatch extends AppCompatActivity {
 
         textNumPeriode.setText(String.valueOf(periodetemps.split(" ")[0]));
         textTempsRestant.setText(periodetemps.split(" ")[1]);
+
+
+        // Lancement du Timer
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                sync();
+            }
+        };
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(task,2000,45000);
 
         parier.setOnClickListener(new View.OnClickListener() {
             @Override
